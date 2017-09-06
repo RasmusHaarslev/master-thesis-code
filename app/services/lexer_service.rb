@@ -3,7 +3,11 @@ class LexerService
   attr_accessor :input
 
   def initialize(input)
-    @input = input.map { |line| line.rstrip }
+    @input = input.map(&:rstrip)
+  end
+
+  def tokens
+    [voters, movies, preferences]
   end
 
   def voters
@@ -17,7 +21,6 @@ class LexerService
   def preferences
     tokens = []
     @input[3..-1].each do |line|
-      line.chomp!
       tokens << tokenize(line)
     end
 
@@ -31,7 +34,7 @@ class LexerService
 
     match = /^(?<voter>\S+): (?<preferences>[\S ]+)$/.match(sequence)
     tokens << match[:voter]
-    tokens << match[:preferences].split(/(>=)|(>)/)
+    tokens.concat(match[:preferences].split(/(>=)|(>)/))
 
     tokens
   end

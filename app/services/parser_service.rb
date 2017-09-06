@@ -1,35 +1,38 @@
 class ParserService
 
   def initialize(input)
-    @lexer = LexerService.new(input)
+    @tokens      = input
+    @voters      = input[0]
+    @movies      = input[1]
+    @preferences = input[2]
   end
 
   def parse
-    @voters           = @lexer.voters
-    @movies           = @lexer.movies
-    @preference_lines = @lexer.preferences
+    parsed_hash = { voters: @voters, movies: @movies, preferences: {} }
 
-    parsed_hash = { voters: @voters, movies: @movies }
+    puts 'Entered parse'
 
-    @preference_lines.each do |tokens|
-      voter, *preferences = tokens
-      parsed_preferences  = parse_preferences(preferences)
-      parsed_hash[voter]  = parsed_preferences
+    @preferences.each do |tokens|
+      voter, *preference = tokens
+      parsed_hash[:preferences][voter.to_sym]  = parse_preference(preference)
     end
+
+    parsed_hash
   end
 
-  def parse_preferences(preferences)
+  def parse_preference(preference)
     parsed_array = []
 
-    until preferences.empty? do
+    until preference.empty? do
       preference_array = []
-      preference_array << preferences.shift
+      preference_array << preference.shift
 
-      until preferences.first == '>' do
-        preferences.shift
-        preference_array << preferences.shift
+      until preference.first == '>' || preference.empty? do
+        preference.shift
+        preference_array << preference.shift
       end
 
+      preference.shift
       parsed_array << preference_array
     end
 
