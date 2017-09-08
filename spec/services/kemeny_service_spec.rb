@@ -6,7 +6,7 @@ require_relative './../../app/services/parser_service.rb'
 RSpec.describe KemenyService do
   before :each do
     #lexer = LexerService.new(File.readlines(File.expand_path('spec/files/test_strong_preferences.txt')))
-    lexer = LexerService.new(File.readlines(File.expand_path('spec/files/test_weak_preferences.txt')))
+    lexer   = LexerService.new(File.readlines(File.expand_path('spec/files/test_weak_preferences.txt')))
     @parser = ParserService.new(lexer.tokens)
     @parser.parse_preference(lexer.preferences)
     @movies = @parser.parse[:movies]
@@ -41,17 +41,15 @@ RSpec.describe KemenyService do
     end
   end
 
-  """
-  describe '#voters' do
-    it 'tokenizes voters properly' do
-      expect(@lexer.voters).to eq(%w(Rasmus Troels Martin))
-    end
-  end
-
-  describe '#movies' do
-    it 'tokenizes movies properly' do
-      expect(@lexer.movies).to eq(%w(Warcraft Batman Superman))
-    end
-  end
-  """
+  # describe '#voters' do
+  #   it 'tokenizes voters properly' do
+  #     expect(@lexer.voters).to eq(%w(Rasmus Troels Martin))
+  #   end
+  # end
+  #
+  # describe '#movies' do
+  #   it 'tokenizes movies properly' do
+  #     expect(@lexer.movies).to eq(%w(Warcraft Batman Superman))
+  #   end
+  # end
 end
