@@ -1,14 +1,20 @@
 require 'spec_helper'
 require_relative './../../app/services/kemeny_service.rb'
+require_relative './../../app/services/lexer_service.rb'
+require_relative './../../app/services/parser_service.rb'
 
 RSpec.describe KemenyService do
   before :each do
-    @kemeny = KemenyService.new([[['a'], ['b','c']], [['b'],['a'],['c']], [['b','a'],['c']], [['c'],['b'],['a']] ])
+    @lexer = LexerService.new(File.readlines(File.expand_path('spec/files/test_strong_preferences.txt')))
+    @parser = ParserService.new()
+    #@kemeny = KemenyService.new([[['a'], ['b','c']], [['b'],['a'],['c']], [['b','a'],['c']], [['c'],['b'],['a']] ])
+    @kemeny = KemenyService.new(@lexer.preferences)
   end
 
   describe '#initialize' do
     it 'initializes properly' do
-      expect(@kemeny.compareTwo('a', 'c')).to eq([3,0,1])
+      print @pr
+      expect(@kemeny.compareTwo(@lexer.movies[0], @lexer.movies[2])).to eq([0,3,0])
     end
   end
 
