@@ -11,13 +11,14 @@ RSpec.describe ParserService do
   describe '#parse' do
     it 'parses properly' do
       output = {
-          :voters      => ["Rasmus", "Troels", "Martin"],
-          :movies      => ["Warcraft", "Batman", "Superman"],
-          :preferences => {
-              :Rasmus => [["Warcraft"], ["Batman"], ["Superman"]],
-              :Troels => [["Superman"], ["Batman"], ["Warcraft"]],
-              :Martin => [["Batman"], ["Warcraft"], ["Superman"]]
-          } }
+        voters: %w[Rasmus Troels Martin],
+        movies: %w[Warcraft Batman Superman],
+        preferences: {
+          Rasmus: [['Warcraft'], ['Batman'], ['Superman']],
+          Troels: [['Superman'], ['Batman'], ['Warcraft']],
+          Martin: [['Batman'], ['Warcraft'], ['Superman']]
+        }
+      }
 
       expect(@parser.parse).to eq(output)
     end
