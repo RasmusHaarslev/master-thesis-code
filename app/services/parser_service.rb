@@ -11,8 +11,8 @@ class ParserService
     parsed_hash = { voters: @voters, movies: @movies, preferences: {} }
 
     @preferences.each do |tokens|
-      voter, *preference = tokens
-      parsed_hash[:preferences][voter.to_sym]  = parse_preference(preference)
+      voter, *preference                      = tokens
+      parsed_hash[:preferences][voter.to_sym] = parse_preference(preference)
     end
 
     parsed_hash

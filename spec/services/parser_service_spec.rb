@@ -11,8 +11,8 @@ RSpec.describe ParserService do
   describe '#parse' do
     it 'parses properly' do
       output = {
-        voters: %w[Rasmus Troels Martin],
-        movies: %w[Warcraft Batman Superman],
+        voters:      %w[Rasmus Troels Martin],
+        movies:      %w[Warcraft Batman Superman],
         preferences: {
           Rasmus: [['Warcraft'], ['Batman'], ['Superman']],
           Troels: [['Superman'], ['Batman'], ['Warcraft']],

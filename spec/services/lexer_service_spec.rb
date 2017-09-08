@@ -28,9 +28,9 @@ RSpec.describe LexerService do
   describe '#preferences' do
     it 'tokenizes preferences properly' do
       expected = [
-          %w[Rasmus Warcraft > Batman > Superman],
-          %w[Troels Superman > Batman > Warcraft],
-          %w[Martin Batman > Warcraft > Superman]
+        %w[Rasmus Warcraft > Batman > Superman],
+        %w[Troels Superman > Batman > Warcraft],
+        %w[Martin Batman > Warcraft > Superman]
       ]
       expect(@lexer.preferences).to eq(expected)
     end
@@ -39,13 +39,13 @@ RSpec.describe LexerService do
   describe '#tokens' do
     it 'tokenizes input properly' do
       output = [
-          %w[Rasmus Troels Martin],
-          %w[Warcraft Batman Superman],
-          [
-              %w[Rasmus Warcraft > Batman > Superman],
-              %w[Troels Superman > Batman > Warcraft],
-              %w[Martin Batman > Warcraft > Superman]
-          ]
+        %w[Rasmus Troels Martin],
+        %w[Warcraft Batman Superman],
+        [
+          %w[Rasmus Warcraft > Batman > Superman],
+          %w[Troels Superman > Batman > Warcraft],
+          %w[Martin Batman > Warcraft > Superman]
+        ]
       ]
       expect(@lexer.tokens).to eq(output)
     end
