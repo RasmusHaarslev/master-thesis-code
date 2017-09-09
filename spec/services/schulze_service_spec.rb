@@ -65,7 +65,7 @@ RSpec.describe SchulzeService do
   end
 
   describe '#social_preference' do
-    it 'should output the social preference ranking' do
+    it 'should output the social preference ranking (wiki example)' do
 
       input = [
           [0, 28, 28, 30, 24],
