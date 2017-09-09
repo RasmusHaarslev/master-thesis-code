@@ -11,13 +11,9 @@ RSpec.describe SchulzeService do
         person3: ['C', 'D', 'B', 'A'],
         person4: ['A', 'D', 'C', 'B']
     }
-    @candidate_index = {
-        A: 0,
-        B: 1,
-        C: 2,
-        D: 3
-    }
+    @candidate_index = Hash[@voting_proiles[:person1].sort.zip (0..@voting_proiles[:person1].size)]
   end
+
   describe '#pair_wise_matrix' do
     it 'should calculate the pairwise matrix of the preferences' do
       output = [
@@ -27,7 +23,8 @@ RSpec.describe SchulzeService do
           [1, 3, 3, 0]
       ]
 
-      expect(@schulze.pair_wise_matrix(@voting_proiles, @candidate_index)).to eq(Matrix[output])
+      expect(@schulze.pair_wise_matrix(@voting_proiles, @candidate_index))
+          .to eq(Matrix[output])
     end
   end
   /
@@ -70,6 +67,24 @@ RSpec.describe SchulzeService do
   describe '#social_preference' do
     it 'should output the social preference ranking' do
 
+      input = [
+          [0, 28, 28, 30, 24],
+          [25, 0, 28, 33, 24],
+          [25, 29, 0, 29, 24],
+          [25, 28, 28, 0, 24],
+          [25, 28, 28, 31, 0]
+      ]
+
+      candidate_index = {
+          'A' => 0,
+          'B' => 1,
+          'C' => 2,
+          'D' => 3,
+          'E' => 4
+      }
+
+      expect(@schulze.social_preference_ranking(Matrix[input], candidate_index))
+          .to eq(['E', 'A', 'C', 'B' ,'D'])
     end
   end
 end

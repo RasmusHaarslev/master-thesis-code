@@ -2,19 +2,19 @@ require 'matrix'
 class SchulzeService
 
   def pair_wise_matrix(voting_proiles, candidate_index)
-    number_candidates = voting_proiles[:person1].length
+    number_candidates = voting_proiles.first[1].length
     pair_wise_preference_matrix = Matrix.zero(number_candidates)
     pair_wise_preference_array = pair_wise_preference_matrix.to_a
 
     voting_proiles.each do |key, array|
       profile = voting_proiles[key]
       for i in 0..(number_candidates-1)
-        candidate_sym = profile[i].to_sym
-        cand_index = candidate_index[candidate_sym]
+        candidate = profile[i]
+        cand_index = candidate_index[candidate]
         for j in (i+1)..(number_candidates-1)
-          candidate_sym = profile[j].to_sym
-          cand_index2 = candidate_index[candidate_sym]
-          pair_wise_preference_array[cand_index][cand_index2] += 1 unless cand_index2 == cand_index
+          candidate = profile[j]
+          cand_index2 = candidate_index[candidate]
+          pair_wise_preference_array[cand_index][cand_index2] += 1 unless (cand_index2 == cand_index)
         end
       end
     end
@@ -48,12 +48,29 @@ class SchulzeService
         end
       end
     end
+
     Matrix[strongst_path_matrix]
 
   end
 
-  def social_preference strongst_path_matrix
+  def social_preference_ranking(strongst_path_matrix, candidate_index)
+    size = strongst_path_matrix.column_size
+    array_to_work_with = strongst_path_matrix.to_a[0]
+    candidate_score = candidate_index.clone
+    candidate_score = candidate_score.each{ |k, v| candidate_score[k] = 0 }
+    revertes_candidate_index = candidate_index.invert
 
+    for i in 0..(size-1)
+      candidate = revertes_candidate_index[i]
+      for j in 0..(size-1)
+        unless i == j
+          if array_to_work_with[i][j] > array_to_work_with[j][i]
+            candidate_score[candidate] += 1
+          end
+        end
+      end
+    end
+    candidate_score.sort_by{|k,v| v}.map{|x| x[0]}.reverse
   end
 
 end
