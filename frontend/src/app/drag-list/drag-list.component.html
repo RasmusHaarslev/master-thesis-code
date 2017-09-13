@@ -1,23 +1,9 @@
-<h4>Simple sortable</h4>
-<div class="row">
-  <div class="col-sm-3">
-    <div class="panel panel-success">
-      <div class="panel-heading">
-        Favorite drinks
-      </div>
-      <div class="panel-body">
-        <ul class="list-group" dnd-sortable-container [sortableData]="listOne">
-          <li *ngFor="let item of listOne; let i = index" class="list-group-item" dnd-sortable [sortableIndex]="i">{{item}}</li>
-        </ul>
-      </div>
-    </div>
-  </div>
-  <div class="col-sm-6">
-    <div class="panel panel-default">
-      <div class="panel-body">
-        My prefences:<br/>
-        <span *ngFor="let item of listOne; let i = index">{{i + 1}}) {{item}}<br/></span>
-      </div>
-    </div>
-  </div>
-</div>
+
+<h1>{{title}}</h1>
+
+<md-list dnd-sortable-container [sortableData]="candidates">
+  <md-list-item style="border: 1px solid darkgrey; background-color: #1CA9F0;" *ngFor="let item of candidates; let i = index" class="list-group-item" dnd-sortable [sortableIndex]="i">
+    {{item}}
+  </md-list-item>
+</md-list>
+

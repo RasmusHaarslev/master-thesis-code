@@ -1,4 +1,5 @@
-import {Component, HostListener, Inject, OnInit} from '@angular/core';
+import {AfterViewChecked, Component, Input, OnInit} from '@angular/core';
+
 
 
 @Component({
@@ -6,8 +7,19 @@ import {Component, HostListener, Inject, OnInit} from '@angular/core';
   templateUrl: './drag-list.component.html',
   styleUrls: ['./drag-list.component.css']
 })
-export class DragListComponent{
+export class DragListComponent implements OnInit{
+  ngOnInit(): void {
+    var el = document.getElementsByTagName("md-list-item");
+    console.log(el);
+    console.log(el[0]);
+  }
 
-  listOne: Array<string> = ['Coffee', 'Orange Juice', 'Red Wine', 'Unhealty drink!', 'Water'];
+  @Input() candidates: Array<string>;
+  @Input() title: string;
+
+  constructor(){
+
+    //el.addEventListener("touchstart", handleStart, false);
+  }
 }
 

@@ -2,7 +2,10 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
-import {MdInputModule, MdButtonModule} from '@angular/material';
+import {
+  MdInputModule,
+  MdButtonModule,
+  MdListModule} from '@angular/material';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FlexLayoutModule } from '@angular/flex-layout';
 
@@ -14,7 +17,7 @@ import { DragListComponent } from './drag-list/drag-list.component';
 import { HomeComponent } from './home/home.component';
 
 const appRoutes: Routes = [
-  { path: 'voting', component: VotingComponent },
+  { path: 'voting/:code', component: VotingComponent },
   { path: '**', component: HomeComponent }
 ];
 
@@ -29,6 +32,7 @@ const appRoutes: Routes = [
     BrowserModule,
     MdInputModule,
     MdButtonModule,
+    MdListModule,
     BrowserAnimationsModule,
     FlexLayoutModule,
     DndModule.forRoot(),
