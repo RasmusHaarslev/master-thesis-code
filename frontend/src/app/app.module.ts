@@ -6,6 +6,8 @@ import {MdInputModule, MdButtonModule} from '@angular/material';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FlexLayoutModule } from '@angular/flex-layout';
 
+import { DndModule } from 'ng2-dnd';
+
 import { AppComponent } from './app.component';
 import { VotingComponent } from './voting/voting.component';
 import { DragListComponent } from './drag-list/drag-list.component';
@@ -29,6 +31,7 @@ const appRoutes: Routes = [
     MdButtonModule,
     BrowserAnimationsModule,
     FlexLayoutModule,
+    DndModule.forRoot(),
     RouterModule.forRoot(
       appRoutes,
       { enableTracing: false } // <-- debugging purposes only
