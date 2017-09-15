@@ -1,11 +1,9 @@
-class Votings::SchulzeController < ApplicationController
+class Votings::SchulzesController < ApplicationController
 before_action :set_voting, only: [:show]
 
   def show
-    @schulze = SchulzeService.new()
-    @schulze.pair_wise_matrix
-    @schulze.strongest_path_matrix()
-    @schulze.social_preference_ranking
+    @schulze = SchulzeService.new
+    render json: @schulze.calculate_schulze(FormatService.format_voting(@voting))
   end
 
   private

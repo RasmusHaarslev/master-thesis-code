@@ -1,9 +1,9 @@
-class Votings::KemenyController < ApplicationController
-  before_action :set_action, only: [:show]
+class Votings::KemeniesController < ApplicationController
+  before_action :set_voting, only: [:show]
 
   def show
     @kemeny = KemenyService.new(FormatService.format_voting(@voting))
-    @kemeny.getWinner(JSON.parse(@voting.alternatives))
+    render json: @kemeny.getWinner(JSON.parse(@voting.alternatives))
   end
 
   private
