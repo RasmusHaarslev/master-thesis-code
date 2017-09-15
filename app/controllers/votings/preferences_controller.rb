@@ -1,7 +1,7 @@
 class Votings::PreferencesController < ApplicationController
   before_action :set_voting, only: %i[create]
 
-  # POST /votings/:voting_id/preference
+  # POST /votings/:voting_id/preferences
   def create
     @preference = Voting::Preference.new(preference: JSON.generate(preference_params[:preference]))
 
