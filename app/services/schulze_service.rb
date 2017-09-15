@@ -1,6 +1,16 @@
 require 'matrix'
 class SchulzeService
 
+  def calculate_schulze(preferences)
+    preferences = preferences.each{ |key, array| preferences[key] = array.flatten}
+    key, value = preferences.first
+    candidate_index = Hash[preferences[key].sort.zip (0..preferences[key].size)]
+    pair_wise_matrix = pair_wise_matrix(preferences, candidate_index)
+    strongest_path_matrix = strongest_path_matrix(pair_wise_matrix)
+    social_preference_ranking(strongest_path_matrix, candidate_index)
+  end
+
+
   def pair_wise_matrix(voting_proiles, candidate_index)
     number_candidates = voting_proiles.first[1].length
     pair_wise_preference_matrix = Matrix.zero(number_candidates)
