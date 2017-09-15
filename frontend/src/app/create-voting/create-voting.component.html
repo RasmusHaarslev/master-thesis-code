@@ -1,0 +1,49 @@
+<h2>Opret en afstemning</h2>
+
+
+  <div class="form-group">
+    <md-form-field>
+      <input mdInput [(ngModel)]="title"  placeholder="Titel"/>
+    </md-form-field>
+  </div>
+  <div class="form-group">
+    <md-form-field>
+      <textarea mdInput [(ngModel)]="question"  placeholder="Spørgsmål"></textarea>
+    </md-form-field>
+  </div>
+  <div class="form-group">
+    <md-form-field>
+      <input mdInput [(ngModel)]="option"  placeholder="Valg mulighed"/>
+    </md-form-field>
+    <button md-raised-button (click)="addOption(option)" color="primary">Tilføj</button>
+  </div>
+  <div class="form-group">
+    <div fxLayout='column' fxFlex="33">
+      <md-list>
+        <md-list-item
+          style="border: 1px solid darkgrey;
+          background-color: #1CA9F0;"
+          *ngFor="let item of options;let i = index">
+          <p nfIf="item.edit" mdLine>
+            {{item}}
+          </p>
+          <button md-raised-button
+                  color="warn"
+                  (click)="removeOption(i)">
+            Fjern
+          </button>
+        </md-list-item>
+      </md-list>
+    </div>
+  </div>
+  <div class="form-group">
+    <button md-raised-button
+            color="primary"
+            (click)="createVoting()">
+      Opret afstemning
+    </button>
+  </div>
+
+
+
+
