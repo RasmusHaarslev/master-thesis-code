@@ -32,8 +32,8 @@ export class CreateVotingComponent{
       'question': this.question
     };
     // Make the HTTP request:
-    this.http.post('api/voting',voting).subscribe(data => {
-      this.router.navigate(['/voting', { code: data}]);
+    this.http.post('api/votings',voting).subscribe(data => {
+      this.router.navigate(['voting', data['code']]);
     });
   }
 

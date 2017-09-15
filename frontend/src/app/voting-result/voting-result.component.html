@@ -1,0 +1,11 @@
+<h1>Resultat af afstemmning</h1>
+<md-list>
+  <md-list-item
+    style="border: 1px solid darkgrey;
+          background-color: #1CA9F0;"
+    *ngFor="let item of options;let i = index">
+    <p nfIf="item.edit" mdLine>
+      {{item}}
+    </p>
+  </md-list-item>
+</md-list>

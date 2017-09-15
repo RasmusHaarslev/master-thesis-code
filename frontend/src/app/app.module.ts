@@ -18,10 +18,12 @@ import { VotingComponent } from './voting/voting.component';
 import { DragListComponent } from './drag-list/drag-list.component';
 import { HomeComponent } from './home/home.component';
 import { CreateVotingComponent } from './create-voting/create-voting.component';
+import { VotingResultComponent } from './voting-result/voting-result.component';
 
 const appRoutes: Routes = [
   { path: 'voting/:code', component: VotingComponent },
   { path: 'voting', component: CreateVotingComponent },
+  { path: 'result/:code', component: VotingResultComponent },
   { path: '**', component: HomeComponent }
 ];
 
@@ -31,7 +33,8 @@ const appRoutes: Routes = [
     VotingComponent,
     DragListComponent,
     HomeComponent,
-    CreateVotingComponent
+    CreateVotingComponent,
+    VotingResultComponent
   ],
   imports: [
     BrowserModule,

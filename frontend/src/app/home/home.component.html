@@ -1,19 +1,30 @@
 <div fxLayout='column' fxLayoutAlign="center center"  style="height: 100vh">
-  <form>
+
+
     <div fxLayout='row' fxLayoutAlign="center">
+      <div class="form-group">
       <md-form-field>
-        <input mdInput placeholder="Voting code">
+        <input mdInput [(ngModel)]="code" placeholder="Voting code">
       </md-form-field>
+      </div>
     </div>
 
-    <div fxLayout='row' fxLayoutAlign="center">
-      <button md-raised-button color="primary" routerLink="/voting/">Enter Voting</button>
-    </div>
+
 
     <div fxLayout='row' fxLayoutAlign="center">
+      <div class="form-group">
+      <button md-raised-button color="primary" (click)="enterVoting()">Enter Voting</button>
+      </div>
+    </div>
+
+
+    <div fxLayout='row' fxLayoutAlign="center">
+      <div class="form-group">
       <button md-raised-button color="primary" routerLink="/voting">Create Voting</button>
+      </div>
     </div>
-  </form>
+
+
 </div>
 
 
