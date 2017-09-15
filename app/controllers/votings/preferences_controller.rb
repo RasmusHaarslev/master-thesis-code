@@ -8,7 +8,7 @@ class Votings::PreferencesController < ApplicationController
     if @voting.preferences << @preference
       render nothing: true, status: :ok
     else
-      render @preference.errors, status: :unprocessable_entity
+      render json: @preference.errors, status: :unprocessable_entity
     end
   end
 
