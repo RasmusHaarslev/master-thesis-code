@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {ActivatedRoute, Params} from "@angular/router";
+import {HttpClient} from "@angular/common/http";
 
 @Component({
   selector: 'app-voting',
@@ -11,7 +12,8 @@ export class VotingComponent implements OnInit {
   candidateTest: Array<string>;
   titleTest: string;
 
-  constructor(private activatedRoute: ActivatedRoute) {
+  constructor(private activatedRoute: ActivatedRoute,
+              private http: HttpClient) {
     this.candidateTest = ['test', 'test2', 'test3'];
     this.titleTest = "Film"
   }
@@ -20,7 +22,9 @@ export class VotingComponent implements OnInit {
   ngOnInit() {
     this.activatedRoute.params.subscribe((params: Params) => {
       let code = params['code'];
-      console.log(code);
+      this.http.get('api/voting/' + code).subscribe(data => {
+        let result = data['results'];
+      });
     });
   }
 

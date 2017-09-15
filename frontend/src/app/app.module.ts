@@ -1,6 +1,8 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { FormsModule }   from '@angular/forms';
+import {HttpClientModule} from '@angular/common/http';
 
 import {
   MdInputModule,
@@ -15,9 +17,11 @@ import { AppComponent } from './app.component';
 import { VotingComponent } from './voting/voting.component';
 import { DragListComponent } from './drag-list/drag-list.component';
 import { HomeComponent } from './home/home.component';
+import { CreateVotingComponent } from './create-voting/create-voting.component';
 
 const appRoutes: Routes = [
   { path: 'voting/:code', component: VotingComponent },
+  { path: 'voting', component: CreateVotingComponent },
   { path: '**', component: HomeComponent }
 ];
 
@@ -26,7 +30,8 @@ const appRoutes: Routes = [
     AppComponent,
     VotingComponent,
     DragListComponent,
-    HomeComponent
+    HomeComponent,
+    CreateVotingComponent
   ],
   imports: [
     BrowserModule,
@@ -35,6 +40,8 @@ const appRoutes: Routes = [
     MdListModule,
     BrowserAnimationsModule,
     FlexLayoutModule,
+    FormsModule,
+    HttpClientModule,
     DndModule.forRoot(),
     RouterModule.forRoot(
       appRoutes,

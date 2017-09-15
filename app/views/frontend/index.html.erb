@@ -1,0 +1,11 @@
+<% content_for :head do %>
+    <base href="/">
+<% end %>
+<base href="/">
+<app-root></app-root>
+
+<%= javascript_include_tag "inline.bundle" %>
+<%= javascript_include_tag "polyfills.bundle" %>
+<%= javascript_include_tag "styles.bundle" %>
+<%= javascript_include_tag "vendor.bundle" %>
+<%= javascript_include_tag "main.bundle" %>
