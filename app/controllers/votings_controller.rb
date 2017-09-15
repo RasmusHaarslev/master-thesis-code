@@ -44,17 +44,6 @@ class VotingsController < ApplicationController
     render nothing: true, status: :ok
   end
 
-  # POST /votings/:id/preference
-  def preference
-    @preference = Preference.new(preference: JSON.generate(preference_params[:preference]))
-
-    if @voting.preferences << @preference
-      render nothing: true, status: :ok
-    else
-      render @preference.errors, status: :unprocessable_entity
-    end
-  end
-
   private
 
   # Use callbacks to share common setup or constraints between actions.
@@ -68,12 +57,6 @@ class VotingsController < ApplicationController
       :title,
       :question,
       { alternatives: [] }
-    )
-  end
-
-  def preference_params
-    params.require(:preference).permit(
-      { preference: [] }
     )
   end
 end

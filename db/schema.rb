@@ -10,12 +10,12 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170913123221) do
+ActiveRecord::Schema.define(version: 20170915074227) do
 
-  create_table "preferences", force: :cascade do |t|
+  create_table "voting_preferences", force: :cascade do |t|
     t.string  "preference"
     t.integer "voting_id"
-    t.index ["voting_id"], name: "index_preferences_on_voting_id"
+    t.index ["voting_id"], name: "index_voting_preferences_on_voting_id"
   end
 
   create_table "votings", force: :cascade do |t|
