@@ -14,6 +14,18 @@ RSpec.describe SchulzeService do
     @candidate_index = Hash[@voting_proiles[:person1].sort.zip (0..@voting_proiles[:person1].size)]
   end
 
+  describe '#calculate_schulze' do
+    it 'calculates schulze for a hash of preferences' do
+      preferences = {
+          person1: [['A'], ['B', 'D'], ['C']],
+          person2: [['A'], ['D'], ['C'], ['B']],
+          person3: [['C', 'D'], ['B'], ['A']],
+          person4: [['A', 'D'], ['C', 'B']]
+      }
+      puts @schulze.calculate_schulze preferences
+    end
+  end
+
   describe '#pair_wise_matrix' do
     it 'should calculate the pairwise matrix of the preferences' do
       output = [
