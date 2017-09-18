@@ -5,6 +5,18 @@ class Votings::PreferencesController < ApplicationController
   def create
     @preference = Voting::Preference.new(preference: JSON.generate(preference_params[:preference]))
 
+    unless preference_params[:preference].uniq.length == preference_params[:preference].length
+      render json: @preference.errors, status: :unprocessable_entity
+      return
+    end
+
+    preference_params[:preference].each do |a|
+      unless @voting.alternatives.include? a
+        render json: @preference.errors, status: :unprocessable_entity
+        return
+      end
+    end
+
     if @voting.preferences << @preference
       render nothing: true, status: :ok
     else
