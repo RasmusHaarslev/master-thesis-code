@@ -8,15 +8,20 @@ import {HttpClient} from "@angular/common/http";
   styleUrls: ['./voting-result.component.css']
 })
 export class VotingResultComponent implements OnInit {
-  public options: Array<string>;
+  public schulzeResult;
+  public kemenieResult;
   constructor(private activatedRoute: ActivatedRoute,
               private http: HttpClient) { }
 
   ngOnInit() {
     this.activatedRoute.params.subscribe((params: Params) => {
       let code = params['code'];
-      this.http.get('api/votings/' + code).subscribe(data => {
-        this.options = data['alternatives'];
+      this.http.get('api/votings/'+ code+'/schulzes').subscribe(data => {
+        this.schulzeResult = data;
+      });
+      this.http.get('api/votings/'+ code+'/kemenies').subscribe(data => {
+        console.log(data[0]);
+        this.kemenieResult = data[0]
       });
     })
   }
