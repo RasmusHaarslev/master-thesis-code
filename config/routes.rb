@@ -5,7 +5,7 @@ Rails.application.routes.draw do
   scope :api do
     resources :votings do
       scope module: :votings do
-        resource :preferences, only: %i[create]
+        resource :preferences, only: %i[show create]
         resource :kemenies, only: %i[show]
         resource :schulzes, only: %i[show]
       end

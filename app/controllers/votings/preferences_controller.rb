@@ -1,5 +1,10 @@
 class Votings::PreferencesController < ApplicationController
-  before_action :set_voting, only: %i[create]
+  before_action :set_voting, only: %i[show create]
+
+  # GET /votings/:voting_id/preferences
+  def show
+    render json: @voting.preferences, status: :ok
+  end
 
   # POST /votings/:voting_id/preferences
   def create
