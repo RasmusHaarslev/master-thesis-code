@@ -39,20 +39,27 @@ RSpec.describe SchulzeService do
           .to eq(Matrix[output])
     end
   end
-  /
+
   describe '#strongest_path_matrix' do
-    it 'should create a graph only consisting of strongest paths from preference matrix' do
+    it 'should be used for simple pirnts' do
       output = [
-          [0, 2, 3, 3],
-          [0, 0, 0, 0],
-          [0, 3, 0, 0],
-          [0, 3, 3, 0]
+          [0, 8, 14, 10],
+          [13, 0, 6, 2],
+          [7, 15, 0, 12],
+          [11, 19, 9, 0]
       ]
-        pair_wise_perefence_matrix = @schulze.pair_wise_matrix(@voting_proiles, @candidate_index)
-        @schulze.strongest_path_matrix pair_wise_perefence_matrix
+      strong_paths =  @schulze.strongest_path_matrix Matrix[output]
+      candidate_index = {
+          'A' => 0,
+          'B' => 1,
+          'C' => 2,
+          'D' => 3
+      }
+    puts "test"
+    puts @schulze.social_preference_ranking(strong_paths, candidate_index)
     end
   end
-  /
+
   describe '#strongest_path_matrix' do
     it 'should calculate the strongest path matrix from the example given on wiki' do
       input = [
