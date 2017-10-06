@@ -1,8 +1,10 @@
 <h1>Voting page</h1>
 
+<h2>{{title}}</h2>
+<p>{{question}}</p>
+
 <app-drag-list
-  [candidates]="alternatives"
-  [title]="title">
+  [candidates]="alternatives">
 </app-drag-list>
 <button md-raised-button color="primary" (click)="submitVote()">Stem</button>
 

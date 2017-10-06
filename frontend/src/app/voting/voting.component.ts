@@ -11,6 +11,7 @@ export class VotingComponent implements OnInit {
 
   alternatives: Array<string>;
   title: string;
+  question: string;
   private code: string;
 
   constructor(private activatedRoute: ActivatedRoute,
@@ -35,6 +36,7 @@ export class VotingComponent implements OnInit {
       this.http.get('api/votings/' + code).subscribe(data => {
         this.alternatives = data['alternatives'];
         this.title = data['title'];
+        this.question = data['question']
         this.code = data['code'];
       });
     });

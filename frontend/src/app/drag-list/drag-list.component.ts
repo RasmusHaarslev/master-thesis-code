@@ -15,7 +15,6 @@ export class DragListComponent implements OnInit{
   }
 
   @Input() candidates: Array<string>;
-  @Input() title: string;
 
   constructor(){
 
