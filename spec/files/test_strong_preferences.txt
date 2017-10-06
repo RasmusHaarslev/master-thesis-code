@@ -1,6 +1,0 @@
-Rasmus,Troels,Martin
-Warcraft,Batman,Superman
-
-Rasmus: Warcraft>Batman>Superman
-Troels: Superman>Batman>Warcraft
-Martin: Batman>Warcraft>Superman

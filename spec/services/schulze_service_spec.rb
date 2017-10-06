@@ -4,8 +4,8 @@ require_relative './../../app/services/schulze_service.rb'
 
 RSpec.describe SchulzeService do
   before :each do
-    @schulze = SchulzeService.new()
-    @voting_proiles = {
+    @schulze         = SchulzeService.new
+    @voting_proiles  = {
         person1: ['A', 'B', 'D', 'C'],
         person2: ['A', 'D', 'C', 'B'],
         person3: ['C', 'D', 'B', 'A'],
@@ -103,7 +103,7 @@ RSpec.describe SchulzeService do
       }
 
       expect(@schulze.social_preference_ranking(Matrix[input], candidate_index))
-          .to eq(['E', 'A', 'C', 'B' ,'D'])
+          .to eq(['E', 'A', 'C', 'B', 'D'])
     end
   end
 end
