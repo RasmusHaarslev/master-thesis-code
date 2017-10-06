@@ -4,8 +4,8 @@ require_relative './../../app/services/schulze_service.rb'
 
 RSpec.describe SchulzeService do
   before :each do
-    @schulze = SchulzeService.new()
-    @voting_proiles = {
+    @schulze         = SchulzeService.new
+    @voting_proiles  = {
         person1: ['A', 'B', 'D', 'C'],
         person2: ['A', 'D', 'C', 'B'],
         person3: ['C', 'D', 'B', 'A'],
@@ -39,20 +39,20 @@ RSpec.describe SchulzeService do
           .to eq(Matrix[output])
     end
   end
-  /
-  describe '#strongest_path_matrix' do
-    it 'should create a graph only consisting of strongest paths from preference matrix' do
-      output = [
-          [0, 2, 3, 3],
-          [0, 0, 0, 0],
-          [0, 3, 0, 0],
-          [0, 3, 3, 0]
-      ]
-        pair_wise_perefence_matrix = @schulze.pair_wise_matrix(@voting_proiles, @candidate_index)
-        @schulze.strongest_path_matrix pair_wise_perefence_matrix
-    end
-  end
-  /
+
+  # describe '#strongest_path_matrix' do
+  #   it 'should create a graph only consisting of strongest paths from preference matrix' do
+  #     output = [
+  #         [0, 2, 3, 3],
+  #         [0, 0, 0, 0],
+  #         [0, 3, 0, 0],
+  #         [0, 3, 3, 0]
+  #     ]
+  #       pair_wise_perefence_matrix = @schulze.pair_wise_matrix(@voting_proiles, @candidate_index)
+  #       @schulze.strongest_path_matrix pair_wise_perefence_matrix
+  #   end
+  # end
+
   describe '#strongest_path_matrix' do
     it 'should calculate the strongest path matrix from the example given on wiki' do
       input = [
@@ -96,7 +96,7 @@ RSpec.describe SchulzeService do
       }
 
       expect(@schulze.social_preference_ranking(Matrix[input], candidate_index))
-          .to eq(['E', 'A', 'C', 'B' ,'D'])
+          .to eq(['E', 'A', 'C', 'B', 'D'])
     end
   end
 end
