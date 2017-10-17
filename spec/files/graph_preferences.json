@@ -1,35 +1,39 @@
 {
-    "voters": ["Rasmus", "Troels", "Martin"],
-    "movies": ["Warcraft", "Batman", "Superman"],
-    "times": ["19:00", "20:00", "21:00"],
-    "cinemas": ["Cinemaxx", "Palads", "Falkoner"],
-    "associations": {
-        "Warcraft": {
-            "19:00": ["Cinemaxx", "Palads"],
-            "21:00": ["Falkoner"]
-        },
-        "Batman": {
-            "20:00": ["Cinemaxx", "Palads", "Falkoner"]
-        },
-        "Superman": {
-            "19:00": ["Palads"],
-            "20:00": ["Cinemaxx"],
-            "21:00": ["Falkoner"]
-        }
+  "voters": ["Rasmus", "Troels", "Martin"],
+  "movies": ["Warcraft", "Batman", "Superman"],
+  "times": ["19:00", "20:00", "21:00"],
+  "cinemas": ["Cinemaxx", "Palads", "Falkoner"],
+  "associations": {
+    "19:00": {
+      "Batman": ["Cinemaxx", "Palads"],
+      "Superman": ["Falkoner"]
     },
-    "movie_preferences": {
-        "Rasmus": [["Warcraft"], ["Batman"], ["Superman"]],
-        "Troels": [["Superman"], ["Batman"], ["Warcraft"]],
-        "Martin": [["Batman"], ["Warcraft"], ["Superman"]]
+    "20:00": {
+      "Warcraft": ["Cinemaxx", "Palads", "Falkoner"]
     },
-    "time_preferences": {
-        "Rasmus": [["20:00", "19:00"], ["21:00"]],
-        "Troels": [["19:00"], ["20:00", "21:00"]],
-        "Martin": [["21:00", "20:00"], ["19:00"]]
-    },
-    "cinema_preferences": {
-        "Rasmus": [["Cinemaxx"], ["Falkoner"], ["Palads"]],
-        "Troels": [["Falkoner"], ["Palads"], ["Cinemaxx"]],
-        "Martin": [["Falkoner"], ["Cinemaxx"], ["Palads"]]
+    "21:00": {
+      "Batman": ["Palads"],
+      "Superman": ["Cinemaxx"]
     }
+  },
+  "movie_preferences": {
+    "Rasmus": ["Warcraft", "Batman", "Superman"],
+    "Troels": ["Superman", "Batman", "Warcraft"],
+    "Martin": ["Batman", "Warcraft", "Superman"]
+  },
+  "time_preferences": {
+    "Rasmus": ["20:00", "19:00", "21:00"],
+    "Troels": ["19:00", "20:00", "21:00"],
+    "Martin": ["21:00", "20:00", "19:00"]
+  },
+  "time_votes": {
+    "Rasmus": ["19:00", "20:00", "21:00"],
+    "Troels": ["19:00", "20:00"],
+    "Martin": ["20:00", "21:00"]
+  },
+  "cinema_preferences": {
+    "Rasmus": ["Cinemaxx", "Falkoner", "Palads"],
+    "Troels": ["Falkoner", "Palads", "Cinemaxx"],
+    "Martin": ["Falkoner", "Cinemaxx", "Palads"]
+  }
 }
