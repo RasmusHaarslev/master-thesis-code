@@ -3,7 +3,7 @@ class Votings::KemeniesController < ApplicationController
 
   def show
     @kemeny = KemenyService.new(FormatService.format_voting(@voting))
-    render json: @kemeny.getWinner(JSON.parse(@voting.alternatives))
+    render json: @kemeny.winner(JSON.parse(@voting.alternatives))
   end
 
   private
