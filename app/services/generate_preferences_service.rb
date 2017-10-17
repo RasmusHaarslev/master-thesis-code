@@ -2,33 +2,67 @@ require 'securerandom'
 
 class GeneratePreferencesService
 
-  attr_accessor :preferences
+  attr_accessor :p
 
-  def initialize(voterAmount, alternativeAmount)
-    @voters = randomArray(voterAmount)
-    @alternatives = randomArray(alternativeAmount)
-    @preferences = writePreferenceString()
+  def initialize(voters, alternatives, cinemas, times)
+    @p = Hash.new
+    @v = generate_items('voter_', voters)
+    @a = generate_items('alternative_', alternatives)
+    @c = generate_items('cinema_', cinemas)
+    @t = random_times(times)
+
+    @p['voters'] = @v
+    @p['movies'] = @a
+    @p['times'] = @t
+    @p['cinemas'] = @c
+    @p['associations'] = generate_associations
+    @p['movie_preferences'] = generate_preferences(@a)
+    @p['time_preferences'] = generate_preferences(@t)
+    @p['time_votes'] = generate_time_votes
+    @p['cinema_preferences'] = generate_preferences(@c)
+
   end
 
   private
 
-  def randomArray(iterations)
-    result = []
-    while result.uniq().length < iterations
-      result.push(SecureRandom.hex(3))
-    end
-    return result.uniq()
+  def generate_items(name, amount)
+    Array.new(amount){ |i| String.new(name) << (i+1).to_s }
   end
 
-  def writePreferenceString
-    result = String.new
-    result << @voters.join(',') + "\n"
-    result << @alternatives.join(',') + "\n\n"
-
-    @voters.each do |voter|
-      result << voter + ': ' + @alternatives.shuffle().join('>') + "\n"
+  def random_times(amount)
+    result = Set.new
+    while result.length < amount
+      result << (SecureRandom.rand(12...21).to_s << ':' << %w[00 30].sample)
     end
-    return result
+    result.sort.to_a
+  end
+
+  def generate_associations
+    ass = Hash.new
+    @t.each do |time|
+      junk = Hash.new
+      @a.sample(1 + rand(@a.length)).each do |movie|
+        junk[movie] = @c.sample(1 + rand(@c.length))
+      end
+      ass[time] = junk
+    end
+    ass
+  end
+
+  def generate_preferences(items)
+    pref = Hash.new
+    @v.each do |voter|
+      pref[voter] = items.shuffle
+    end
+    pref
+  end
+
+  def generate_time_votes
+    pref = Hash.new
+    @v.each do |voter|
+      pref[voter] = @t.sample(1 + rand(@t.length)).sort
+    end
+    pref
   end
 
 end

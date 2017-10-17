@@ -1,0 +1,185 @@
+{
+  "voters": [
+    "voter_1",
+    "voter_2",
+    "voter_3"
+  ],
+  "movies": [
+    "alternative_1",
+    "alternative_2",
+    "alternative_3",
+    "alternative_4",
+    "alternative_5",
+    "alternative_6",
+    "alternative_7"
+  ],
+  "times": [
+    "12:00",
+    "15:30",
+    "16:30",
+    "17:00",
+    "19:30"
+  ],
+  "cinemas": [
+    "cinema_1",
+    "cinema_2",
+    "cinema_3"
+  ],
+  "associations": {
+    "12:00": {
+      "alternative_4": [
+        "cinema_3",
+        "cinema_1",
+        "cinema_2"
+      ],
+      "alternative_6": [
+        "cinema_1"
+      ],
+      "alternative_3": [
+        "cinema_2",
+        "cinema_1",
+        "cinema_3"
+      ],
+      "alternative_1": [
+        "cinema_2",
+        "cinema_1",
+        "cinema_3"
+      ],
+      "alternative_5": [
+        "cinema_1",
+        "cinema_3",
+        "cinema_2"
+      ],
+      "alternative_2": [
+        "cinema_1",
+        "cinema_3",
+        "cinema_2"
+      ]
+    },
+    "15:30": {
+      "alternative_7": [
+        "cinema_3",
+        "cinema_1"
+      ],
+      "alternative_4": [
+        "cinema_1",
+        "cinema_2"
+      ],
+      "alternative_3": [
+        "cinema_2"
+      ]
+    },
+    "16:30": {
+      "alternative_6": [
+        "cinema_1",
+        "cinema_2",
+        "cinema_3"
+      ],
+      "alternative_7": [
+        "cinema_3",
+        "cinema_1",
+        "cinema_2"
+      ],
+      "alternative_1": [
+        "cinema_1",
+        "cinema_2"
+      ]
+    },
+    "17:00": {
+      "alternative_4": [
+        "cinema_3",
+        "cinema_1"
+      ],
+      "alternative_1": [
+        "cinema_3"
+      ]
+    },
+    "19:30": {
+      "alternative_6": [
+        "cinema_2",
+        "cinema_3"
+      ]
+    }
+  },
+  "movie_preferences": {
+    "voter_1": [
+      "alternative_2",
+      "alternative_3",
+      "alternative_5",
+      "alternative_7",
+      "alternative_1",
+      "alternative_6",
+      "alternative_4"
+    ],
+    "voter_2": [
+      "alternative_6",
+      "alternative_5",
+      "alternative_1",
+      "alternative_2",
+      "alternative_3",
+      "alternative_7",
+      "alternative_4"
+    ],
+    "voter_3": [
+      "alternative_1",
+      "alternative_2",
+      "alternative_4",
+      "alternative_6",
+      "alternative_5",
+      "alternative_3",
+      "alternative_7"
+    ]
+  },
+  "time_preferences": {
+    "voter_1": [
+      "16:30",
+      "12:00",
+      "15:30",
+      "19:30",
+      "17:00"
+    ],
+    "voter_2": [
+      "12:00",
+      "15:30",
+      "16:30",
+      "19:30",
+      "17:00"
+    ],
+    "voter_3": [
+      "15:30",
+      "17:00",
+      "16:30",
+      "19:30",
+      "12:00"
+    ]
+  },
+  "time_votes": {
+    "voter_1": [
+      "16:30",
+      "17:00"
+    ],
+    "voter_2": [
+      "17:00"
+    ],
+    "voter_3": [
+      "16:30"
+    ]
+  },
+  "cinema_preferences": {
+    "voter_1": [
+      "cinema_1",
+      "cinema_2",
+      "cinema_3"
+    ],
+    "voter_2": [
+      "cinema_3",
+      "cinema_1",
+      "cinema_2"
+    ],
+    "voter_3": [
+      "cinema_1",
+      "cinema_2",
+      "cinema_3"
+    ]
+  }
+}
