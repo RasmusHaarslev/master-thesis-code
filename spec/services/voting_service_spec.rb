@@ -3,6 +3,7 @@ require_relative './../../app/services/voting_service.rb'
 require_relative './../../app/services/schulze_service.rb'
 require_relative './../../app/services/kemeny_service.rb'
 require_relative './../../app/services/majority_service.rb'
+require_relative './../../app/services/exclusion_service.rb'
 
 
 RSpec.describe VotingService do
@@ -22,18 +23,26 @@ RSpec.describe VotingService do
   end
 
   describe '#schulze' do
-    it 'Finds the winners'
+    it 'Finds the winners' do
+      expect(@voting_service.schulze).to eq(time: '19:00', movie: 'Batman', cinema: 'Cinemaxx')
+    end
   end
 
   describe '#kemeny' do
-    it 'Finds the winners'
+    it 'Finds the winners' do
+      expect(@voting_service.kemeny).to eq(time: '19:00', movie: 'Batman', cinema: 'Cinemaxx')
+    end
   end
 
   describe '#majority_schulze' do
-    it 'finds the winners'
+    it 'finds the winners' do
+      expect(@voting_service.majority_schulze).to eq(time: '20:00', movie: 'Warcraft', cinema: 'Falkoner')
+    end
   end
 
   describe '#majority_kemeny' do
-    it 'finds the winners'
+    it 'finds the winners' do
+      expect(@voting_service.majority_kemeny).to eq(time: '20:00', movie: 'Warcraft', cinema: 'Falkoner')
+    end
   end
 end
