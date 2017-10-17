@@ -1,52 +1,49 @@
 class KemenyService
 
-  attr_accessor :input
+  def winner(preferences)
+    @preferences = preferences
 
-  def initialize(input)
-    @input = input
+    score_hash = calculate_permutation_scores
+    score_hash.key(score_hash.values.max)
   end
 
-  def getScore(x,y )
-    score = 0
-    @input.each do |_,profile|
-      yFound = false
-      profile.each do |b|
-        if b.include?(x)
-          if !yFound
-            score += 1
-          end
-        elsif b.include?(y)
-          yFound = true
-        end
-      end
-    end
-    score
-  end
+  private
 
-  def pairwiseJunk(pairs)
-    scores = Hash.new
-    pairs.each do |ranking|
+  def calculate_permutation_scores
+    scores = {}
+
+    permutations.each do |permutation|
       score = 0
-      ranking.combination(2).to_a.each do |x, y|
-        score += getScore(x, y)
+
+      permutation.combination(2).to_a.each do |x, y|
+        score += score(x, y)
       end
-      scores[ranking] = score
+
+      scores[permutation] = score
     end
+
     scores
   end
 
-  def choicePairs(choices)
-    choices.combination(2).to_a
+  def score(x, y)
+    score = 0
+
+    @preferences.each_value do |profile|
+      y_found = false
+
+      profile.each do |alternative|
+        if alternative == x && !y_found
+          score += 1
+        elsif alternative == y
+          y_found = true
+        end
+      end
+    end
+
+    score
   end
 
-  def preferenceOrderings(choices)
-    choices.permutation(choices.length).to_a
+  def permutations
+    @preferences.values.flatten.uniq.permutation.to_a
   end
-
-  def getWinner(movies)
-    prefs = preferenceOrderings(movies)
-    rankingScores = pairwiseJunk(prefs)
-    rankingScores.max_by{|k,v| v}
-  end
-
 end
