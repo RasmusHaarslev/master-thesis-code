@@ -36,7 +36,7 @@ RSpec.describe 'Benchmark' do
         Hash[@big_letters[0...10].map { |y| [y, @small_letters[0..x].shuffle] }]
       end
 
-      Benchmark.bm(15) do |x|
+      Benchmark.bmbm(15) do |x|
         preferences.each do |preference|
           x.report("#{preference.values.first.length} alternatives:") { @schulze.calculate_schulze(preference) }
         end
