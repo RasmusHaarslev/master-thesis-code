@@ -2,10 +2,8 @@ require 'securerandom'
 
 class GeneratePreferencesService
 
-  attr_accessor :p
-
-  def initialize(voters, alternatives, cinemas, times)
-    @p = Hash.new
+  def generate(voters, alternatives, cinemas, times)
+    @p = {}
     @v = generate_items('voter_', voters)
     @a = generate_items('alternative_', alternatives)
     @c = generate_items('cinema_', cinemas)
@@ -21,12 +19,13 @@ class GeneratePreferencesService
     @p['time_votes'] = generate_time_votes
     @p['cinema_preferences'] = generate_preferences(@c)
 
+    @p
   end
 
   private
 
   def generate_items(name, amount)
-    Array.new(amount){ |i| String.new(name) << (i+1).to_s }
+    Array.new(amount) { |i| String.new(name) << (i+1).to_s }
   end
 
   def random_times(amount)
@@ -38,9 +37,9 @@ class GeneratePreferencesService
   end
 
   def generate_associations
-    ass = Hash.new
+    ass = {}
     @t.each do |time|
-      junk = Hash.new
+      junk = {}
       @a.sample(1 + rand(@a.length)).each do |movie|
         junk[movie] = @c.sample(1 + rand(@c.length))
       end
@@ -50,7 +49,7 @@ class GeneratePreferencesService
   end
 
   def generate_preferences(items)
-    pref = Hash.new
+    pref = {}
     @v.each do |voter|
       pref[voter] = items.shuffle
     end
@@ -58,7 +57,7 @@ class GeneratePreferencesService
   end
 
   def generate_time_votes
-    pref = Hash.new
+    pref = {}
     @v.each do |voter|
       pref[voter] = @t.sample(1 + rand(@t.length)).sort
     end
