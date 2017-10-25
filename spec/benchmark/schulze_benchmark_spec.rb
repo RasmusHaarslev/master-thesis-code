@@ -11,99 +11,79 @@ require_relative './../../app/services/generate_preferences_service.rb'
 RSpec.describe 'Benchmark' do
   before :all do
     @schulze = SchulzeService.new
-    @folder  = 'spec/benchmark_results'
+    @voting_service = VotingService.new
+    @folder  = 'spec/benchmark_results/schulze'
+    Dir.mkdir('spec/benchmark_results') unless File.exists?('spec/benchmark_results')
+    Dir.mkdir('spec/benchmark_results/schulze') unless File.exists?('spec/benchmark_results/schulze')
   end
 
   describe '#Schulze single round' do
-    it '3 voters' do
-      $stdout      = File.new("#{@folder}/single_round_3_voters.log", 'w')
-      $stdout.sync = true
-
-      preferences = (2..100).map do |x|
-        GeneratePreferencesService.new.generate(3, x, 0, 0)['movie_preferences']
+    it '5 voters' do
+      scenarios = Dir['spec/benchmark_files/5_voters/*'].sort_by { |x| x.split('/').last.split('_').first.to_i }.map do |fname|
+        JSON.parse(File.read(fname))
       end
 
+      $stdout      = File.open("#{@folder}/single_round_5_voters.log", 'w')
+      $stdout.sync = true
+
       Benchmark.bmbm(15) do |x|
-        preferences.each do |preference|
-          x.report("#{preference.values.first.length} alternatives:") { @schulze.calculate_schulze(preference) }
+        scenarios.each do |scenario|
+          x.report("#{scenario['movies'].length} alternatives:") do
+            @schulze.calculate_schulze(scenario['movie_preferences'])
+          end
         end
       end
     end
 
-    it '10 voters' do
-      $stdout      = File.new("#{@folder}/single_round_10_voters.log", 'w')
+    it '25 voters' do
+      scenarios = Dir['spec/benchmark_files/25_voters/*'].sort_by { |x| x.split('/').last.split('_').first.to_i }.map do |fname|
+        JSON.parse(File.read(fname))
+      end
+
+      $stdout      = File.open("#{@folder}/single_round_25_voters.log", 'w')
       $stdout.sync = true
 
-      preferences = (2..100).map do |x|
-        GeneratePreferencesService.new.generate(10, x, 0, 0)['movie_preferences']
-      end
-
       Benchmark.bmbm(15) do |x|
-        preferences.each do |preference|
-          x.report("#{preference.values.first.length} alternatives:") { @schulze.calculate_schulze(preference) }
-        end
-      end
-    end
-
-    it '100 voters' do
-      $stdout      = File.new("#{@folder}/single_round_100_voters.log", 'w')
-      $stdout.sync = true
-
-      preferences = (2..100).map do |x|
-        GeneratePreferencesService.new.generate(100, x, 0, 0)['movie_preferences']
-      end
-
-      Benchmark.bmbm(15) do |x|
-        preferences.each do |preference|
-          x.report("#{preference.values.first.length} alternatives:") { @schulze.calculate_schulze(preference) }
+        scenarios.each do |scenario|
+          x.report("#{scenario['movies'].length} alternatives:") do
+            @schulze.calculate_schulze(scenario['movie_preferences'])
+          end
         end
       end
     end
   end
 
   describe '#Schulze 3 rounds' do
-    it '3 voters' do
-      $stdout      = File.new("#{@folder}/three_rounds_3_voters.log", 'w')
-      $stdout.sync = true
-
-      scenarios = (2..100).map do |x|
-        GeneratePreferencesService.new.generate(3, x, x, x)
+    it '5 voters' do
+      scenarios = Dir['spec/benchmark_files/5_voters/*'].sort_by { |x| x.split('/').last.split('_').first.to_i }.map do |fname|
+        JSON.parse(File.read(fname))
       end
 
-      voting_service = VotingService.new
+      $stdout      = File.open("#{@folder}/three_round_5_voters.log", 'w')
+      $stdout.sync = true
+
       Benchmark.bmbm(15) do |x|
         scenarios.each do |scenario|
-          x.report("#{scenario['movie_preferences'].values.first.length} alternatives:") { voting_service.schulze(scenario) }
+          x.report("#{scenario['movies'].length} alternatives:") do
+            @voting_service.schulze(scenario)
+          end
         end
       end
     end
 
-    it '10 voters' do
-      $stdout      = File.new("#{@folder}/three_rounds_10_voters.log", 'w')
+    it '25 voters' do
+      scenarios = Dir['spec/benchmark_files/25_voters/*'].sort_by { |x| x.split('/').last.split('_').first.to_i }.map do |fname|
+        JSON.parse(File.read(fname))
+      end
+
+      $stdout      = File.open("#{@folder}/three_round_25_voters.log", 'w')
       $stdout.sync = true
 
-      preferences = (2...100).map do |x|
-        Hash[(0...10).map { |y| [y, (0..x).to_a.shuffle] }]
-      end
-
       Benchmark.bmbm(15) do |x|
-        preferences.each do |preference|
-          x.report("#{preference.values.first.length} alternatives:") { @schulze.calculate_schulze(preference) }
-        end
-      end
-    end
-
-    it '100 voters' do
-      $stdout      = File.new("#{@folder}/three_rounds_100_voters.log", 'w')
-      $stdout.sync = true
-
-      preferences = (2...100).map do |x|
-        Hash[(0...100).map { |y| [y, (0..x).to_a.shuffle] }]
-      end
-
-      Benchmark.bmbm(15) do |x|
-        preferences.each do |preference|
-          x.report("#{preference.values.first.length} alternatives:") { @schulze.calculate_schulze(preference) }
+        scenarios.each do |scenario|
+          x.report("#{scenario['movies'].length} alternatives:") do
+            @voting_service.schulze(scenario)
+          end
         end
       end
     end
