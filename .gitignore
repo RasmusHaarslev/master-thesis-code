@@ -21,3 +21,7 @@
 .byebug_history
 
 .idea
+
+
+/spec/benchmark_files
+/spec/benchmark_results

@@ -7,7 +7,7 @@ class GeneratePreferencesService
     @v = generate_items('voter_', voters)
     @a = generate_items('alternative_', alternatives)
     @c = generate_items('cinema_', cinemas)
-    @t = random_times(times)
+    @t = generate_items('time_', times)
 
     @p['voters'] = @v
     @p['movies'] = @a
@@ -26,14 +26,6 @@ class GeneratePreferencesService
 
   def generate_items(name, amount)
     Array.new(amount) { |i| String.new(name) << (i+1).to_s }
-  end
-
-  def random_times(amount)
-    result = Set.new
-    while result.length < amount
-      result << (SecureRandom.rand(12...21).to_s << ':' << %w[00 30].sample)
-    end
-    result.sort.to_a
   end
 
   def generate_associations

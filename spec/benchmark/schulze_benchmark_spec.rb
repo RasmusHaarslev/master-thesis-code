@@ -19,7 +19,7 @@ RSpec.describe 'Benchmark' do
       $stdout      = File.new("#{@folder}/single_round_3_voters.log", 'w')
       $stdout.sync = true
 
-      preferences = (2...100).map do |x|
+      preferences = (2..100).map do |x|
         GeneratePreferencesService.new.generate(3, x, 0, 0)['movie_preferences']
       end
 
@@ -34,7 +34,7 @@ RSpec.describe 'Benchmark' do
       $stdout      = File.new("#{@folder}/single_round_10_voters.log", 'w')
       $stdout.sync = true
 
-      preferences = (2...100).map do |x|
+      preferences = (2..100).map do |x|
         GeneratePreferencesService.new.generate(10, x, 0, 0)['movie_preferences']
       end
 
@@ -49,7 +49,7 @@ RSpec.describe 'Benchmark' do
       $stdout      = File.new("#{@folder}/single_round_100_voters.log", 'w')
       $stdout.sync = true
 
-      preferences = (2...100).map do |x|
+      preferences = (2..100).map do |x|
         GeneratePreferencesService.new.generate(100, x, 0, 0)['movie_preferences']
       end
 
@@ -66,14 +66,14 @@ RSpec.describe 'Benchmark' do
       $stdout      = File.new("#{@folder}/three_rounds_3_voters.log", 'w')
       $stdout.sync = true
 
-      preferences = (2...20).map do |x|
+      scenarios = (2..100).map do |x|
         GeneratePreferencesService.new.generate(3, x, x, x)
       end
 
+      voting_service = VotingService.new
       Benchmark.bmbm(15) do |x|
-        preferences.each do |preference|
-          @voting_scenario = VotingService.new(preference)
-          x.report("#{preference.values.first.length} alternatives:") { @voting_scenario.schulze }
+        scenarios.each do |scenario|
+          x.report("#{scenario['movie_preferences'].values.first.length} alternatives:") { voting_service.schulze(scenario) }
         end
       end
     end
