@@ -9,14 +9,14 @@ class GeneratePreferencesService
     @c = generate_items('cinema_', cinemas)
     @t = generate_items('time_', times)
 
-    @p['voters'] = @v
-    @p['movies'] = @a
-    @p['times'] = @t
-    @p['cinemas'] = @c
-    @p['associations'] = generate_associations
-    @p['movie_preferences'] = generate_preferences(@a)
-    @p['time_preferences'] = generate_preferences(@t)
-    @p['time_votes'] = generate_time_votes
+    @p['voters']             = @v
+    @p['movies']             = @a
+    @p['times']              = @t
+    @p['cinemas']            = @c
+    @p['associations']       = generate_associations
+    @p['movie_preferences']  = generate_preferences(@a)
+    @p['time_preferences']   = generate_preferences(@t)
+    @p['time_votes']         = generate_time_votes
     @p['cinema_preferences'] = generate_preferences(@c)
 
     @p
