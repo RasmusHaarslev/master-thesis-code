@@ -18,22 +18,7 @@ RSpec.describe RankedPairsService do
     end
 
     it 'resolves' do
-      p @ranked_pairs_service.resolve(@preferences)
-    end
-  end
-
-  describe '#tally' do
-    before :all do
-      @preferences = {
-        voter1: %w[a b d c],
-        voter2: %w[b a c d],
-        voter3: %w[c a d b],
-        voter4: %w[a c d b]
-      }
-    end
-
-    it 'tallies' do
-      puts @ranked_pairs_service.tally(@preferences)
+      expect(@ranked_pairs_service.resolve(@preferences)).to eq %w[a b c d]
     end
   end
 end

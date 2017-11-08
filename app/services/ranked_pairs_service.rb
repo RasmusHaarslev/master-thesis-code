@@ -11,14 +11,24 @@ class RankedPairsService
       @loser        = first_votes >= second_votes ? second : first
       @loser_votes  = first_votes >= second_votes ? second_votes : first_votes
     end
+
+    def to_s
+      "#{@winner}(#{@winner_votes}) - #{@loser}(#{@loser_votes})"
+    end
+
+    def to_a
+      [@winner, @loser]
+    end
   end
 
   def resolve(preferences)
-    pairwise_results = tally(preferences)
-    sorted_pairs     = rank_sort(pairwise_results)
-    graph            = lock(sorted_pairs)
+    @pairwise_results = tally(preferences)
+    sorted_pairs      = rank_sort(@pairwise_results)
+    graph             = lock(sorted_pairs)
     social_choice_order(graph)
   end
+
+  private
 
   def tally(preferences)
     pair_hash = {}
@@ -36,8 +46,31 @@ class RankedPairsService
   end
 
   def rank_sort(pairs)
-    # This does not take into account how to sort when there are ties!
-    pairs.sort_by(&:winner_votes).reverse
+    return pairs if pairs.length <= 1
+
+    halves = pairs.each_slice((pairs.size/2.0).round).to_a
+    x      = rank_sort(halves.first)
+    y      = rank_sort(halves.last)
+
+    sorted_array = []
+    until x.empty? && y.empty?
+      if x.empty?
+        sorted_array.concat(y)
+        y = []
+      elsif y.empty?
+        sorted_array.concat(x)
+        x = []
+      elsif x.first.winner_votes > y.first.winner_votes
+        sorted_array << x.shift
+      elsif y.first.winner_votes > x.first.winner_votes
+        sorted_array << y.shift
+      else
+        loser_pair = @pairwise_results.detect { |pair| (pair.to_a - [x.first.loser, y.first.loser]).empty? }
+        sorted_array << (loser_pair.loser == x.first.loser ? x.shift : y.shift)
+      end
+    end
+
+    sorted_array
   end
 
   def lock(pairs)
@@ -104,4 +137,5 @@ class RankedPairsService
 
     is_in_maximal
   end
+
 end
