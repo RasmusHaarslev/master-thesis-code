@@ -18,7 +18,7 @@ RSpec.describe RankedPairsService do
     end
 
     it 'resolves' do
-      puts @ranked_pairs_service.resolve(@preferences)
+      p @ranked_pairs_service.resolve(@preferences)
     end
   end
 

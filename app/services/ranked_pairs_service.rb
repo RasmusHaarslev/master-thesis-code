@@ -11,20 +11,13 @@ class RankedPairsService
       @loser        = first_votes >= second_votes ? second : first
       @loser_votes  = first_votes >= second_votes ? second_votes : first_votes
     end
-
-    def to_s
-      "#{@winner}(#{@winner_votes}) : #{@loser}(#{@loser_votes})"
-    end
-
-    def to_a
-      [@winner, @loser]
-    end
   end
 
   def resolve(preferences)
     pairwise_results = tally(preferences)
     sorted_pairs     = rank_sort(pairwise_results)
     graph            = lock(sorted_pairs)
+    social_choice_order(graph)
   end
 
   def tally(preferences)
@@ -48,13 +41,67 @@ class RankedPairsService
   end
 
   def lock(pairs)
-    dg = RGL::DirectedAdjacencyGraph[]
+    graph = RGL::DirectedAdjacencyGraph[]
 
     pairs.each do |pair|
-      dg.add_edge(pair.winner, pair.loser)
-      dg.remove_edge(pair.winner, pair.loser) if dg.cycles.any?
+      graph.add_edge(pair.winner, pair.loser)
+      graph.remove_edge(pair.winner, pair.loser) if graph.cycles.any?
     end
 
-    dg
+    graph
+  end
+
+  def social_choice_order(graph)
+    order = []
+
+    graph.vertices.each do |_|
+      winner = source(graph)
+      order << winner
+      graph.remove_vertex(winner)
+    end
+
+    order
+  end
+
+  def source(graph)
+    vertices = graph.vertices
+
+    graph.edges.each do |edge|
+      vertices.delete(edge.target)
+    end
+
+    vertices.first
+  end
+
+  def schwartz_set(graph)
+    is_in_maximal = graph.vertices
+
+    has_path = {}
+    graph.vertices.each { |vertex| has_path[vertex] = Hash.new(false) }
+    graph.edges.each do |edge|
+      has_path[edge.source][edge.target] = true
+    end
+
+    graph.vertices.each do |k|
+      graph.vertices.each do |i|
+        next if k == i
+
+        graph.vertices.each do |j|
+          next if k == j || i == j
+
+          has_path[i][j] = true if has_path[i][k] && has_path[k][j]
+        end
+      end
+    end
+
+    graph.vertices.each do |i|
+      graph.vertices.each do |j|
+        next if i == j
+
+        is_in_maximal.delete(i) if has_path[j][i] && !has_path[i][j]
+      end
+    end
+
+    is_in_maximal
   end
 end
