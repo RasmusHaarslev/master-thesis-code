@@ -11,11 +11,13 @@ require_relative './../../app/services/generate_preferences_service.rb'
 
 RSpec.describe 'Schulze-majority benchmark' do
   before :all do
-    @schulze        = SchulzeService.new
-    @voting_service = VotingService.new
-    @folder         = 'spec/benchmark_results/schulze_majority'
-    Dir.mkdir('spec/benchmark_results') unless File.exists?('spec/benchmark_results')
-    Dir.mkdir(@folder) unless File.exists?(@folder)
+    @schulze           = SchulzeService.new
+    @voting_service    = VotingService.new
+    @timeout_threshold = 2
+    @repetitions       = 100
+    @folder            = 'spec/benchmark_results/schulze_majority'
+    Dir.mkdir('spec/benchmark_results') unless File.exist?('spec/benchmark_results')
+    Dir.mkdir(@folder) unless File.exist?(@folder)
   end
 
   describe '#Schulze-majority 3 rounds' do
@@ -28,19 +30,26 @@ RSpec.describe 'Schulze-majority benchmark' do
       CSV.open("#{@folder}/three_round_5_voters.csv", 'wb', col_sep: '&') do |csv|
         csv << %w[Alternatives Time Output]
 
-        scenarios.each_with_index do |scenario, idx|
-          puts "Benchmarking scenario #{idx}"
+        catch :too_slow do
+          scenarios.each_with_index do |scenario, idx|
+            puts "Benchmarking scenario #{idx}"
 
-          times   = []
-          winners = nil
-          100.times do |_|
-            start   = Time.now
-            winners = @voting_service.majority_schulze(scenario)
-            finish  = Time.now
-            times << finish - start
+            times   = []
+            winners = nil
+            @repetitions.times do |_|
+              start   = Time.now
+              winners = @voting_service.majority_schulze(scenario)
+              finish  = Time.now
+              times << finish - start
+
+              if finish - start >= @timeout_threshold
+                puts 'Finished benchmark because it was too slow'
+                throw :too_slow
+              end
+            end
+
+            csv << [scenario['movies'].length, times.sum / times.length, winners.join(',')]
           end
-
-          csv << [scenario['movies'].length, times.sum / times.length, winners.join(',')]
         end
       end
     end
@@ -54,19 +63,26 @@ RSpec.describe 'Schulze-majority benchmark' do
       CSV.open("#{@folder}/three_round_25_voters.csv", 'wb', col_sep: '&') do |csv|
         csv << %w[Alternatives Time Output]
 
-        scenarios.each_with_index do |scenario, idx|
-          puts "Benchmarking scenario #{idx}"
+        catch :too_slow do
+          scenarios.each_with_index do |scenario, idx|
+            puts "Benchmarking scenario #{idx}"
 
-          times   = []
-          winners = nil
-          100.times do |_|
-            start   = Time.now
-            winners = @voting_service.majority_schulze(scenario)
-            finish  = Time.now
-            times << finish - start
+            times   = []
+            winners = nil
+            @repetitions.times do |_|
+              start   = Time.now
+              winners = @voting_service.majority_schulze(scenario)
+              finish  = Time.now
+              times << finish - start
+
+              if finish - start >= @timeout_threshold
+                puts 'Finished benchmark because it was too slow'
+                throw :too_slow
+              end
+            end
+
+            csv << [scenario['movies'].length, times.sum / times.length, winners.join(',')]
           end
-
-          csv << [scenario['movies'].length, times.sum / times.length, winners.join(',')]
         end
       end
     end

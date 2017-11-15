@@ -11,11 +11,13 @@ require_relative './../../app/services/generate_preferences_service.rb'
 
 RSpec.describe 'Ranked pairs benchmarking' do
   before :all do
-    @ranked_pairs   = RankedPairsService.new
-    @voting_service = VotingService.new
-    @folder         = 'spec/benchmark_results/ranked_pairs'
-    Dir.mkdir('spec/benchmark_results') unless File.exists?('spec/benchmark_results')
-    Dir.mkdir(@folder) unless File.exists?(@folder)
+    @ranked_pairs      = RankedPairsService.new
+    @voting_service    = VotingService.new
+    @timeout_threshold = 2
+    @repetitions       = 100
+    @folder            = 'spec/benchmark_results/ranked_pairs'
+    Dir.mkdir('spec/benchmark_results') unless File.exist?('spec/benchmark_results')
+    Dir.mkdir(@folder) unless File.exist?(@folder)
   end
 
   describe '#Ranked pairs single round' do
@@ -34,13 +36,13 @@ RSpec.describe 'Ranked pairs benchmarking' do
 
             times   = []
             winners = nil
-            100.times do |_|
+            @repetitions.times do |_|
               start   = Time.now
               winners = @ranked_pairs.resolve(scenario['movie_preferences'])
               finish  = Time.now
               times << finish - start
 
-              if finish - start >= 2
+              if finish - start >= @timeout_threshold
                 puts 'Finished benchmark because it was too slow'
                 throw :too_slow
               end
@@ -67,13 +69,13 @@ RSpec.describe 'Ranked pairs benchmarking' do
 
             times   = []
             winners = nil
-            100.times do |_|
+            @repetitions.times do |_|
               start   = Time.now
               winners = @ranked_pairs.resolve(scenario['movie_preferences'])
               finish  = Time.now
               times << finish - start
 
-              if finish - start >= 2
+              if finish - start >= @timeout_threshold
                 puts 'Finished benchmark because it was too slow'
                 throw :too_slow
               end
@@ -101,13 +103,13 @@ RSpec.describe 'Ranked pairs benchmarking' do
             puts "Benchmarking scenario #{idx}"
 
             times = []
-            100.times do |_|
+            @repetitions.times do |_|
               start = Time.now
               @voting_service.ranked_pairs(scenario)
               finish = Time.now
               times << finish - start
 
-              if finish - start >= 2
+              if finish - start >= @timeout_threshold
                 puts 'Finished benchmark because it was too slow'
                 throw :too_slow
               end
@@ -133,13 +135,13 @@ RSpec.describe 'Ranked pairs benchmarking' do
             puts "Benchmarking scenario #{idx}"
 
             times = []
-            100.times do |_|
+            @repetitions.times do |_|
               start = Time.now
               @voting_service.ranked_pairs(scenario)
               finish = Time.now
               times << finish - start
 
-              if finish - start >= 2
+              if finish - start >= @timeout_threshold
                 puts 'Finished benchmark because it was too slow'
                 throw :too_slow
               end

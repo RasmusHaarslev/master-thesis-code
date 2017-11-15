@@ -9,18 +9,86 @@ require_relative './../../app/services/exclusion_service.rb'
 require_relative './../../app/services/generate_preferences_service.rb'
 
 
-RSpec.describe 'Ranked-pairs-majority benchmark' do
+RSpec.describe 'Kemeny benchmarking' do
   before :all do
-    @ranked_pairs      = RankedPairsService.new
+    @kemeny            = KemenyService.new
     @voting_service    = VotingService.new
     @timeout_threshold = 2
     @repetitions       = 100
-    @folder            = 'spec/benchmark_results/ranked_pairs_majority'
+    @folder            = 'spec/benchmark_results/kemeny'
     Dir.mkdir('spec/benchmark_results') unless File.exist?('spec/benchmark_results')
     Dir.mkdir(@folder) unless File.exist?(@folder)
   end
 
-  describe '#Ranked-pairs-majority 3 rounds' do
+  describe '#Kemeny single round' do
+    it '5 voters' do
+      puts 'Reading scenarios'
+      scenarios = Dir['spec/benchmark_files/5_voters/*'].sort_by { |x| x.split('/').last.split('_').first.to_i }.map do |fname|
+        JSON.parse(File.read(fname))
+      end
+
+      CSV.open("#{@folder}/single_round_5_voters.csv", 'wb', col_sep: '&') do |csv|
+        csv << %w[Alternatives Time Output]
+
+        catch :too_slow do
+          scenarios.each_with_index do |scenario, idx|
+            puts "Benchmarking scenario #{idx}"
+
+            times   = []
+            winners = nil
+            @repetitions.times do |_|
+              start   = Time.now
+              winners = @kemeny.winner(scenario['movie_preferences'])
+              finish  = Time.now
+              times << finish - start
+
+              if finish - start >= @timeout_threshold
+                puts 'Finished benchmark because it was too slow'
+                throw :too_slow
+              end
+            end
+
+            csv << [scenario['movies'].length, times.sum / times.length, winners.join(',')]
+          end
+        end
+      end
+    end
+
+    it '25 voters' do
+      puts 'Reading scenarios'
+      scenarios = Dir['spec/benchmark_files/25_voters/*'].sort_by { |x| x.split('/').last.split('_').first.to_i }.map do |fname|
+        JSON.parse(File.read(fname))
+      end
+
+      CSV.open("#{@folder}/single_round_25_voters.csv", 'wb', col_sep: '&') do |csv|
+        csv << %w[Alternatives Time Output]
+
+        catch :too_slow do
+          scenarios.each_with_index do |scenario, idx|
+            puts "Benchmarking scenario #{idx}"
+
+            times   = []
+            winners = nil
+            @repetitions.times do |_|
+              start   = Time.now
+              winners = @kemeny.winner(scenario['movie_preferences'])
+              finish  = Time.now
+              times << finish - start
+
+              if finish - start >= @timeout_threshold
+                puts 'Finished benchmark because it was too slow'
+                throw :too_slow
+              end
+            end
+
+            csv << [scenario['movies'].length, times.sum / times.length, winners.join(',')]
+          end
+        end
+      end
+    end
+  end
+
+  describe '#Kemeny 3 rounds' do
     it '5 voters' do
       puts 'Reading scenarios'
       scenarios = Dir['spec/benchmark_files/5_voters/*'].sort_by { |x| x.split('/').last.split('_').first.to_i }.map do |fname|
@@ -38,7 +106,7 @@ RSpec.describe 'Ranked-pairs-majority benchmark' do
             winners = nil
             @repetitions.times do |_|
               start   = Time.now
-              winners = @voting_service.majority_ranked_pairs(scenario)
+              winners = @voting_service.kemeny(scenario)
               finish  = Time.now
               times << finish - start
 
@@ -71,7 +139,7 @@ RSpec.describe 'Ranked-pairs-majority benchmark' do
             winners = nil
             @repetitions.times do |_|
               start   = Time.now
-              winners = @voting_service.majority_ranked_pairs(scenario)
+              winners = @voting_service.kemeny(scenario)
               finish  = Time.now
               times << finish - start
 
