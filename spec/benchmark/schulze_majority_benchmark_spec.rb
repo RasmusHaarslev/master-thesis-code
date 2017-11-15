@@ -10,9 +10,9 @@ require_relative './../../app/services/generate_preferences_service.rb'
 
 RSpec.describe 'Schulze-majority benchmark' do
   before :all do
-    @schulze = SchulzeService.new
+    @schulze        = SchulzeService.new
     @voting_service = VotingService.new
-    @folder  = 'spec/benchmark_results/schulze_majority'
+    @folder         = 'spec/benchmark_results/schulze_majority'
     Dir.mkdir('spec/benchmark_results') unless File.exists?('spec/benchmark_results')
     Dir.mkdir('spec/benchmark_results/schulze_majority') unless File.exists?('spec/benchmark_results/schulze_majority')
   end
@@ -23,14 +23,20 @@ RSpec.describe 'Schulze-majority benchmark' do
         JSON.parse(File.read(fname))
       end
 
-      $stdout      = File.open("#{@folder}/three_round_5_voters.log", 'w')
-      $stdout.sync = true
+      CSV.open("#{@folder}/three_round_5_voters.csv", 'wb', col_sep: '&') do |csv|
+        csv << %w[Alternatives Time Output]
 
-      Benchmark.bmbm(15) do |x|
         scenarios.each do |scenario|
-          x.report("#{scenario['movies'].length} alternatives:") do
-            @voting_service.majority_schulze(scenario)
+          times   = []
+          winners = nil
+          100.times do |_|
+            start   = Time.now
+            winners = @voting_service.majority_schulze(scenario)
+            finish  = Time.now
+            times << finish - start
           end
+
+          csv << [scenario['movies'].length, times.sum / times.length, winners.join(',')]
         end
       end
     end
@@ -40,14 +46,20 @@ RSpec.describe 'Schulze-majority benchmark' do
         JSON.parse(File.read(fname))
       end
 
-      $stdout      = File.open("#{@folder}/three_round_25_voters.log", 'w')
-      $stdout.sync = true
+      CSV.open("#{@folder}/three_round_25_voters.csv", 'wb', col_sep: '&') do |csv|
+        csv << %w[Alternatives Time Output]
 
-      Benchmark.bmbm(15) do |x|
         scenarios.each do |scenario|
-          x.report("#{scenario['movies'].length} alternatives:") do
-            @voting_service.majority_schulze(scenario)
+          times   = []
+          winners = nil
+          100.times do |_|
+            start   = Time.now
+            winners = @voting_service.majority_schulze(scenario)
+            finish  = Time.now
+            times << finish - start
           end
+
+          csv << [scenario['movies'].length, times.sum / times.length, winners.join(',')]
         end
       end
     end

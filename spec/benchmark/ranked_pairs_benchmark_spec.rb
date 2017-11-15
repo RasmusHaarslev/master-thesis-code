@@ -3,21 +3,22 @@ require 'csv'
 require_relative './../../app/services/voting_service.rb'
 require_relative './../../app/services/schulze_service.rb'
 require_relative './../../app/services/kemeny_service.rb'
+require_relative './../../app/services/ranked_pairs_service.rb'
 require_relative './../../app/services/majority_service.rb'
 require_relative './../../app/services/exclusion_service.rb'
 require_relative './../../app/services/generate_preferences_service.rb'
 
 
-RSpec.describe 'Schulze benchmarking' do
+RSpec.describe 'Ranked pairs benchmarking' do
   before :all do
-    @schulze        = SchulzeService.new
+    @ranked_pairs   = RankedPairsService.new
     @voting_service = VotingService.new
-    @folder         = 'spec/benchmark_results/schulze'
+    @folder         = 'spec/benchmark_results/ranked_pairs'
     Dir.mkdir('spec/benchmark_results') unless File.exists?('spec/benchmark_results')
-    Dir.mkdir('spec/benchmark_results/schulze') unless File.exists?('spec/benchmark_results/schulze')
+    Dir.mkdir(@folder) unless File.exists?(@folder)
   end
 
-  describe '#Schulze single round' do
+  describe '#Ranked pairs single round' do
     it '5 voters' do
       scenarios = Dir['spec/benchmark_files/5_voters/*'].sort_by { |x| x.split('/').last.split('_').first.to_i }.map do |fname|
         JSON.parse(File.read(fname))
@@ -29,9 +30,9 @@ RSpec.describe 'Schulze benchmarking' do
         scenarios.each do |scenario|
           times   = []
           winners = nil
-          100.times do |_|
+          1.times do |_|
             start   = Time.now
-            winners = @schulze.calculate_schulze(scenario['movie_preferences'])
+            winners = @ranked_pairs.resolve(scenario['movie_preferences'])
             finish  = Time.now
             times << finish - start
           end
@@ -55,7 +56,7 @@ RSpec.describe 'Schulze benchmarking' do
           winners = nil
           100.times do |_|
             start   = Time.now
-            winners = @schulze.calculate_schulze(scenario['movie_preferences'])
+            winners = @ranked_pairs.resolve(scenario['movie_preferences'])
             finish  = Time.now
             times << finish - start
           end
@@ -80,7 +81,7 @@ RSpec.describe 'Schulze benchmarking' do
           winners = nil
           100.times do |_|
             start   = Time.now
-            winners = @voting_service.schulze(scenario)
+            winners = @ranked_pairs.resolve(scenario)
             finish  = Time.now
             times << finish - start
           end
@@ -103,7 +104,7 @@ RSpec.describe 'Schulze benchmarking' do
           winners = nil
           100.times do |_|
             start   = Time.now
-            winners = @voting_service.schulze(scenario)
+            winners = @ranked_pairs.resolve(scenario)
             finish  = Time.now
             times << finish - start
           end
