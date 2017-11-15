@@ -102,12 +102,11 @@ RSpec.describe 'Schulze benchmarking' do
           scenarios.each_with_index do |scenario, idx|
             puts "Benchmarking scenario #{idx}"
 
-            times   = []
-            winners = nil
+            times = []
             @repetitions.times do |_|
-              start   = Time.now
-              winners = @voting_service.schulze(scenario)
-              finish  = Time.now
+              start = Time.now
+              @voting_service.schulze(scenario)
+              finish = Time.now
               times << finish - start
 
               if finish - start >= @timeout_threshold
@@ -116,7 +115,7 @@ RSpec.describe 'Schulze benchmarking' do
               end
             end
 
-            csv << [scenario['movies'].length, times.sum / times.length, winners.join(',')]
+            csv << [scenario['movies'].length, times.sum / times.length]
           end
         end
       end
@@ -135,12 +134,11 @@ RSpec.describe 'Schulze benchmarking' do
           scenarios.each_with_index do |scenario, idx|
             puts "Benchmarking scenario #{idx}"
 
-            times   = []
-            winners = nil
+            times = []
             @repetitions.times do |_|
-              start   = Time.now
-              winners = @voting_service.schulze(scenario)
-              finish  = Time.now
+              start = Time.now
+              @voting_service.schulze(scenario)
+              finish = Time.now
               times << finish - start
 
               if finish - start >= @timeout_threshold
@@ -149,7 +147,7 @@ RSpec.describe 'Schulze benchmarking' do
               end
             end
 
-            csv << [scenario['movies'].length, times.sum / times.length, winners.join(',')]
+            csv << [scenario['movies'].length, times.sum / times.length]
           end
         end
       end

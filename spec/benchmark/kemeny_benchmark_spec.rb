@@ -103,10 +103,9 @@ RSpec.describe 'Kemeny benchmarking' do
             puts "Benchmarking scenario #{idx}"
 
             times   = []
-            winners = nil
             @repetitions.times do |_|
               start   = Time.now
-              winners = @voting_service.kemeny(scenario)
+              @voting_service.kemeny(scenario)
               finish  = Time.now
               times << finish - start
 
@@ -116,7 +115,7 @@ RSpec.describe 'Kemeny benchmarking' do
               end
             end
 
-            csv << [scenario['movies'].length, times.sum / times.length, winners.join(',')]
+            csv << [scenario['movies'].length, times.sum / times.length]
           end
         end
       end
@@ -136,10 +135,9 @@ RSpec.describe 'Kemeny benchmarking' do
             puts "Benchmarking scenario #{idx}"
 
             times   = []
-            winners = nil
             @repetitions.times do |_|
               start   = Time.now
-              winners = @voting_service.kemeny(scenario)
+              @voting_service.kemeny(scenario)
               finish  = Time.now
               times << finish - start
 
@@ -149,7 +147,7 @@ RSpec.describe 'Kemeny benchmarking' do
               end
             end
 
-            csv << [scenario['movies'].length, times.sum / times.length, winners.join(',')]
+            csv << [scenario['movies'].length, times.sum / times.length]
           end
         end
       end
