@@ -15,7 +15,7 @@ RSpec.describe 'Kemeny-majority benchmark' do
     @voting_service    = VotingService.new
     @timeout_threshold = 2
     @repetitions       = 100
-    @folder            = 'spec/benchmark_results/schulze_majority'
+    @folder            = 'spec/benchmark_results/kemeny_majority'
     Dir.mkdir('spec/benchmark_results') unless File.exist?('spec/benchmark_results')
     Dir.mkdir(@folder) unless File.exist?(@folder)
   end
