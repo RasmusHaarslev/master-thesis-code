@@ -13,7 +13,7 @@ namespace :benchmark do
         print "[#{alternatives} of 100] Generating scenario\r"
 
         File.open("#{Rails.root}/spec/benchmark_files/#{voters}_voters/#{alternatives}_alternatives.json", 'w') do |f|
-          f.write JSON.pretty_generate gp_service.generate(voters, alternatives, alternatives, alternatives)
+          f.write JSON.generate gp_service.generate(voters, alternatives, alternatives, alternatives)
         end
       end
     end
