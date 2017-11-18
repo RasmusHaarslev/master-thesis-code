@@ -21,4 +21,14 @@ RSpec.describe RankedPairsService do
       expect(@ranked_pairs_service.resolve(@preferences)).to eq %w[a b c d]
     end
   end
+
+  describe '#Testing' do
+    before :all do
+      @preferences = JSON.parse(File.read('spec/benchmark_files/5_voters/20_alternatives.json'))
+    end
+
+    it 'resolves' do
+      @ranked_pairs_service.resolve(@preferences['movie_preferences'])
+    end
+  end
 end
