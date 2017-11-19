@@ -1,4 +1,5 @@
 require 'rgl/adjacency'
+require 'set'
 
 class RankedPairsService
 
@@ -88,15 +89,17 @@ class RankedPairsService
     vertex_count = graph.vertices.length
     start_count  = 0
 
-    dfs(graph, start_vertex, start_count, vertex_count)
+    visited_nodes = Set.new
+    dfs(graph, start_vertex, start_count, vertex_count, visited_nodes)
   end
 
-  def dfs(graph, start_vertex, count, vertex_count)
+  def dfs(graph, start_vertex, count, vertex_count, visited_nodes)
+    return false if visited_nodes.include? start_vertex
     return true if count > vertex_count
 
     graph.each_adjacent(start_vertex).each do |current_vertex|
-      cycle_found = dfs(graph, current_vertex, count + 1, vertex_count)
-      return cycle_found if cycle_found
+      visited_nodes.add start_vertex
+      return false || dfs(graph, current_vertex, count + 1, vertex_count, visited_nodes)
     end
 
     false
