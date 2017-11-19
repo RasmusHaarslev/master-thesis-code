@@ -9,18 +9,18 @@ require_relative './../../app/services/exclusion_service.rb'
 require_relative './../../app/services/generate_preferences_service.rb'
 
 
-RSpec.describe 'Schulze benchmarking' do
+RSpec.describe 'Kemeny benchmarking' do
   before :all do
-    @schulze           = SchulzeService.new
+    @kemeny            = KemenyService.new
     @voting_service    = VotingService.new
     @timeout_threshold = 2
     @repetitions       = 100
-    @folder            = 'spec/benchmark_results/schulze'
+    @folder            = 'spec/benchmark_results/kemeny'
     Dir.mkdir('spec/benchmark_results') unless File.exist?('spec/benchmark_results')
     Dir.mkdir(@folder) unless File.exist?(@folder)
   end
 
-  describe '#Schulze single round' do
+  describe '#Kemeny single round' do
     it '5 voters' do
       puts 'Reading scenarios'
       scenarios = Dir['spec/benchmark_files/5_voters/*'].sort_by { |x| x.split('/').last.split('_').first.to_i }.map do |fname|
@@ -38,7 +38,7 @@ RSpec.describe 'Schulze benchmarking' do
             winners = nil
             @repetitions.times do |_|
               start   = Time.now
-              winners = @schulze.calculate_schulze(scenario['movie_preferences'])
+              winners = @kemeny.winner(scenario['movie_preferences'])
               finish  = Time.now
               times << finish - start
 
@@ -71,7 +71,7 @@ RSpec.describe 'Schulze benchmarking' do
             winners = nil
             @repetitions.times do |_|
               start   = Time.now
-              winners = @schulze.calculate_schulze(scenario['movie_preferences'])
+              winners = @kemeny.winner(scenario['movie_preferences'])
               finish  = Time.now
               times << finish - start
 
@@ -88,7 +88,7 @@ RSpec.describe 'Schulze benchmarking' do
     end
   end
 
-  describe '#Schulze 3 rounds' do
+  describe '#Kemeny 3 rounds' do
     it '5 voters' do
       puts 'Reading scenarios'
       scenarios = Dir['spec/benchmark_files/5_voters/*'].sort_by { |x| x.split('/').last.split('_').first.to_i }.map do |fname|
@@ -102,11 +102,11 @@ RSpec.describe 'Schulze benchmarking' do
           scenarios.each_with_index do |scenario, idx|
             puts "Benchmarking scenario #{idx}"
 
-            times = []
+            times   = []
             @repetitions.times do |_|
-              start = Time.now
-              @voting_service.schulze(scenario)
-              finish = Time.now
+              start   = Time.now
+              @voting_service.kemeny(scenario)
+              finish  = Time.now
               times << finish - start
 
               if finish - start >= @timeout_threshold
@@ -134,11 +134,11 @@ RSpec.describe 'Schulze benchmarking' do
           scenarios.each_with_index do |scenario, idx|
             puts "Benchmarking scenario #{idx}"
 
-            times = []
+            times   = []
             @repetitions.times do |_|
-              start = Time.now
-              @voting_service.schulze(scenario)
-              finish = Time.now
+              start   = Time.now
+              @voting_service.kemeny(scenario)
+              finish  = Time.now
               times << finish - start
 
               if finish - start >= @timeout_threshold

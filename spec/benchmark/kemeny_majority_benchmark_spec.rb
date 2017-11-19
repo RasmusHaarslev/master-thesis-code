@@ -9,18 +9,18 @@ require_relative './../../app/services/exclusion_service.rb'
 require_relative './../../app/services/generate_preferences_service.rb'
 
 
-RSpec.describe 'Schulze-majority benchmark' do
+RSpec.describe 'Kemeny-majority benchmark' do
   before :all do
-    @schulze           = SchulzeService.new
+    @kemeny            = KemenyService.new
     @voting_service    = VotingService.new
     @timeout_threshold = 2
     @repetitions       = 100
-    @folder            = 'spec/benchmark_results/schulze_majority'
+    @folder            = 'spec/benchmark_results/kemeny_majority'
     Dir.mkdir('spec/benchmark_results') unless File.exist?('spec/benchmark_results')
     Dir.mkdir(@folder) unless File.exist?(@folder)
   end
 
-  describe '#Schulze-majority 3 rounds' do
+  describe '#Kemeny-majority 3 rounds' do
     it '5 voters' do
       puts 'Reading scenarios'
       scenarios = Dir['spec/benchmark_files/5_voters/*'].sort_by { |x| x.split('/').last.split('_').first.to_i }.map do |fname|
@@ -37,7 +37,7 @@ RSpec.describe 'Schulze-majority benchmark' do
             times = []
             @repetitions.times do |_|
               start = Time.now
-              @voting_service.majority_schulze(scenario)
+              @voting_service.majority_kemeny(scenario)
               finish = Time.now
               times << finish - start
 
@@ -69,7 +69,7 @@ RSpec.describe 'Schulze-majority benchmark' do
             times = []
             @repetitions.times do |_|
               start = Time.now
-              @voting_service.majority_schulze(scenario)
+              @voting_service.majority_kemeny(scenario)
               finish = Time.now
               times << finish - start
 

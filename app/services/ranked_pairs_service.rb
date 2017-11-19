@@ -66,7 +66,7 @@ class RankedPairsService
         sorted_array << y.shift
       else
         loser_pair = @pairwise_results.detect { |pair| (pair.to_a - [x.first.loser, y.first.loser]).empty? }
-        sorted_array << (loser_pair.loser == x.first.loser ? x.shift : y.shift)
+        sorted_array << (loser_pair.nil? || loser_pair.loser == x.first.loser ? x.shift : y.shift)
       end
     end
 
