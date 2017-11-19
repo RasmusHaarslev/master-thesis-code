@@ -91,10 +91,28 @@ class RankedPairsService
 
     pairs.each do |pair|
       graph.add_edge(pair.winner, pair.loser)
-      graph.remove_edge(pair.winner, pair.loser) if graph.cycles.any?
+      graph.remove_edge(pair.winner, pair.loser) if cycles?(graph, pair.loser)
     end
 
     graph
+  end
+
+  def cycles?(graph, start_vertex)
+    vertex_count = graph.vertices.length
+    start_count  = 0
+
+    dfs(graph, start_vertex, start_count, vertex_count)
+  end
+
+  def dfs(graph, start_vertex, count, vertex_count)
+    return true if count > vertex_count
+
+    graph.each_adjacent(start_vertex).each do |current_vertex|
+      cycle_found = dfs(graph, current_vertex, count + 1, vertex_count)
+      return cycle_found if cycle_found
+    end
+
+    false
   end
 
   def social_choice_order(graph)

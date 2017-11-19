@@ -9,16 +9,17 @@ RSpec.describe RankedPairsService do
 
   describe '#resolve' do
     before :all do
-      @preferences = {
-        voter1: %w[a b d c],
-        voter2: %w[b a c d],
-        voter3: %w[c a d b],
-        voter4: %w[a c d b]
-      }
+      @preferences = {}
+
+      count = 1
+      42.times { |x| @preferences["voter_#{count}"] = %w[m n c k]; count += 1 }
+      26.times { |x| @preferences["voter_#{count}"] = %w[n c k m]; count += 1 }
+      15.times { |x| @preferences["voter_#{count}"] = %w[c k n m]; count += 1 }
+      17.times { |x| @preferences["voter_#{count}"] = %w[k c n m]; count += 1 }
     end
 
     it 'resolves' do
-      expect(@ranked_pairs_service.resolve(@preferences)).to eq %w[a b c d]
+      puts @ranked_pairs_service.resolve(@preferences)
     end
   end
 
