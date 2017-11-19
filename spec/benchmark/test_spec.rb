@@ -27,7 +27,7 @@ RSpec.describe 'Ranked-pairs-majority benchmark' do
 
   describe '#test' do
     before :all do
-      @preferences = JSON.parse(File.read('spec/benchmark_files/5_voters/25_alternatives.json'))['movie_preferences']
+      @preferences = JSON.parse(File.read('spec/benchmark_files/5_voters/3_alternatives.json'))['movie_preferences']
     end
 
     it 'is timed' do

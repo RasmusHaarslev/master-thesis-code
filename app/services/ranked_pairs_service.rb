@@ -14,17 +14,21 @@ class RankedPairsService
     end
 
     def to_s
-      "#{@winner}(#{@winner_votes}) - #{@loser}(#{@loser_votes})"
+      "#{@winner}-#{@loser}"
     end
 
     def to_a
       [@winner, @loser]
     end
+
+    def eql?(other)
+      to_s == (other.to_s || other)
+    end
   end
 
   def resolve(preferences)
     @pairwise_results = tally(preferences)
-    sorted_pairs      = rank_sort(@pairwise_results)
+    sorted_pairs      = rank_sort(@pairwise_results.values)
     graph             = lock(sorted_pairs)
     social_choice_order(graph)
   end
@@ -35,7 +39,7 @@ class RankedPairsService
     puts " - Tally time: #{(Time.now - start) * 1000}ms"
 
     start        = Time.now
-    sorted_pairs = rank_sort(@pairwise_results)
+    sorted_pairs = rank_sort(@pairwise_results.values)
     puts " - Sort time: #{(Time.now - start) * 1000}ms"
 
     start = Time.now
@@ -49,8 +53,6 @@ class RankedPairsService
     order
   end
 
-  private
-
   def tally(preferences)
     pair_hash = {}
     preferences.values.first.each { |x| pair_hash[x] = Hash.new(0) }
@@ -61,9 +63,13 @@ class RankedPairsService
       end
     end
 
-    preferences.values.first.combination(2).to_a.map do |pair|
-      Pair.new(pair.first, pair_hash[pair.first][pair.last], pair.last, pair_hash[pair.last][pair.first])
+    pairs = {}
+    preferences.values.first.combination(2).to_a.each do |pair|
+      p = Pair.new(pair.first, pair_hash[pair.first][pair.last], pair.last, pair_hash[pair.last][pair.first])
+      pairs[p] = p
     end
+
+    pairs
   end
 
   def rank_sort(pairs)
@@ -86,7 +92,7 @@ class RankedPairsService
       elsif y.first.winner_votes > x.first.winner_votes
         sorted_array << y.shift
       else
-        loser_pair = @pairwise_results.detect { |pair| (pair.to_a - [x.first.loser, y.first.loser]).empty? }
+        loser_pair = @pairwise_results["#{x.first.loser}(#{x.first.loser_votes})-#{y.first.loser}(#{y.first.loser_votes})"] || @pairwise_results["#{y.first.loser}(#{y.first.loser_votes})-#{x.first.loser}(#{x.first.loser_votes})"]
         sorted_array << (loser_pair.nil? || loser_pair.loser == x.first.loser ? x.shift : y.shift)
       end
     end
@@ -97,34 +103,26 @@ class RankedPairsService
   def lock(pairs)
     graph = RGL::DirectedAdjacencyGraph[]
 
-    cycles = 0
     pairs.each do |pair|
       graph.add_edge(pair.winner, pair.loser)
-      if cycles?(graph, pair.loser)
-        graph.remove_edge(pair.winner, pair.loser)
-        cycles += 1
-      end
+      graph.remove_edge(pair.winner, pair.loser) if cycles?(graph, pair.loser)
     end
 
-    puts "Cycles: #{cycles}"
     graph
   end
 
   def cycles?(graph, start_vertex)
-    vertex_count = graph.vertices.length
-    start_count  = 1
-
-    visited_nodes = Set.new
-    dfs(graph, start_vertex, start_count, vertex_count, visited_nodes)
+    visited_nodes = {}
+    dfs(graph, start_vertex, visited_nodes)
   end
 
-  def dfs(graph, start_vertex, count, vertex_count, visited_nodes)
-    return false if visited_nodes.include? start_vertex
-    return true if count > vertex_count
+  def dfs(graph, start_vertex, visited_nodes)
+    return true if visited_nodes[start_vertex]
 
     graph.each_adjacent(start_vertex).each do |current_vertex|
-      visited_nodes.add start_vertex
-      return false || dfs(graph, current_vertex, count + 1, vertex_count, visited_nodes)
+      visited_nodes[start_vertex] = true
+      cycle_found = dfs(graph, current_vertex, visited_nodes)
+      return cycle_found if cycle_found
     end
 
     false
