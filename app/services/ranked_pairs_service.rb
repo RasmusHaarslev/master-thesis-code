@@ -22,23 +22,10 @@ class RankedPairsService
   end
 
   def resolve(preferences)
-    start             = Time.now
     @pairwise_results = tally(preferences)
-    puts "Tally time: #{(Time.now - start) * 1000}ms"
-
-    start        = Time.now
     sorted_pairs = rank_sort(@pairwise_results)
-    puts "sort time: #{(Time.now - start) * 1000}ms"
-
-    start = Time.now
     graph = lock(sorted_pairs)
-    puts "lock time: #{(Time.now - start) * 1000}ms"
-
-    start = Time.now
-    order = social_choice_order(graph)
-    puts "order time: #{(Time.now - start) * 1000}ms"
-
-    order
+    social_choice_order(graph)
   end
 
   private
