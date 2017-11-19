@@ -23,9 +23,29 @@ class RankedPairsService
 
   def resolve(preferences)
     @pairwise_results = tally(preferences)
-    sorted_pairs = rank_sort(@pairwise_results)
-    graph = lock(sorted_pairs)
+    sorted_pairs      = rank_sort(@pairwise_results)
+    graph             = lock(sorted_pairs)
     social_choice_order(graph)
+  end
+
+  def resolve_timed(preferences)
+    start             = Time.now
+    @pairwise_results = tally(preferences)
+    puts " - Tally time: #{(Time.now - start) * 1000}ms"
+
+    start        = Time.now
+    sorted_pairs = rank_sort(@pairwise_results)
+    puts " - Sort time: #{(Time.now - start) * 1000}ms"
+
+    start = Time.now
+    graph = lock(sorted_pairs)
+    puts " - Lock time: #{(Time.now - start) * 1000}ms"
+
+    start = Time.now
+    order = social_choice_order(graph)
+    puts " - Order time: #{(Time.now - start) * 1000}ms"
+
+    order
   end
 
   private
@@ -76,17 +96,22 @@ class RankedPairsService
   def lock(pairs)
     graph = RGL::DirectedAdjacencyGraph[]
 
+    cycles = 0
     pairs.each do |pair|
       graph.add_edge(pair.winner, pair.loser)
-      graph.remove_edge(pair.winner, pair.loser) if cycles?(graph, pair.loser)
+      if cycles?(graph, pair.loser)
+        graph.remove_edge(pair.winner, pair.loser)
+        cycles += 1
+      end
     end
 
+    puts "Cycles: #{cycles}"
     graph
   end
 
   def cycles?(graph, start_vertex)
     vertex_count = graph.vertices.length
-    start_count  = 0
+    start_count  = 1
 
     dfs(graph, start_vertex, start_count, vertex_count)
   end
