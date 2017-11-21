@@ -14,7 +14,7 @@ class RankedPairsService
     end
 
     def to_s
-      "#{@winner}(#{@winner_votes}) - #{@loser}(#{@loser_votes})"
+      "#{@winner} - #{@loser}"
     end
 
     def to_a
@@ -24,16 +24,33 @@ class RankedPairsService
 
   def resolve(preferences)
     @pairwise_results = tally(preferences)
-    sorted_pairs = rank_sort(@pairwise_results)
-    graph = lock(sorted_pairs)
+    sorted_pairs      = rank_sort(@pairwise_results[:values])
+    graph             = lock(sorted_pairs)
     social_choice_order(graph)
   end
 
-  private
+  def resolve_timed(preferences)
+    start             = Time.now
+    @pairwise_results = tally(preferences)
+    puts " - Tally time: #{(Time.now - start) * 1000}ms"
+
+    start        = Time.now
+    sorted_pairs = rank_sort(@pairwise_results[:values])
+    puts " - Sort time: #{(Time.now - start) * 1000}ms"
+
+    start = Time.now
+    graph = lock(sorted_pairs)
+    puts " - Lock time: #{(Time.now - start) * 1000}ms"
+
+    start = Time.now
+    order = social_choice_order(graph)
+    puts " - Order time: #{(Time.now - start) * 1000}ms"
+
+    order
+  end
 
   def tally(preferences)
-    pair_hash = {}
-    preferences.values.first.each { |x| pair_hash[x] = Hash.new(0) }
+    pair_hash = Hash.new { |hash, key| hash[key] = Hash.new(0) }
 
     preferences.each_value do |preference|
       preference.combination(2).to_a.each do |pair|
@@ -41,9 +58,15 @@ class RankedPairsService
       end
     end
 
-    preferences.values.first.combination(2).to_a.map do |pair|
-      Pair.new(pair.first, pair_hash[pair.first][pair.last], pair.last, pair_hash[pair.last][pair.first])
+    pairs = Hash.new { |hash, key| hash[key] = {} }
+    pairs[:values] = []
+    preferences.values.first.combination(2).to_a.each do |pair|
+      p = Pair.new(pair.first, pair_hash[pair.first][pair.last], pair.last, pair_hash[pair.last][pair.first])
+      pairs[p.winner][p.loser] = p
+      pairs[:values] << p
     end
+
+    pairs
   end
 
   def rank_sort(pairs)
@@ -66,7 +89,7 @@ class RankedPairsService
       elsif y.first.winner_votes > x.first.winner_votes
         sorted_array << y.shift
       else
-        loser_pair = @pairwise_results.detect { |pair| (pair.to_a - [x.first.loser, y.first.loser]).empty? }
+        loser_pair = @pairwise_results[x.first.loser][y.first.loser] || @pairwise_results[y.first.loser][x.first.loser]
         sorted_array << (loser_pair.nil? || loser_pair.loser == x.first.loser ? x.shift : y.shift)
       end
     end
@@ -86,20 +109,17 @@ class RankedPairsService
   end
 
   def cycles?(graph, start_vertex)
-    vertex_count = graph.vertices.length
-    start_count  = 0
-
-    visited_nodes = Set.new
-    dfs(graph, start_vertex, start_count, vertex_count, visited_nodes)
+    visited_nodes = {}
+    dfs(graph, start_vertex, visited_nodes)
   end
 
-  def dfs(graph, start_vertex, count, vertex_count, visited_nodes)
-    return false if visited_nodes.include? start_vertex
-    return true if count > vertex_count
+  def dfs(graph, start_vertex, visited_nodes)
+    return true if visited_nodes[start_vertex]
 
     graph.each_adjacent(start_vertex).each do |current_vertex|
-      visited_nodes.add start_vertex
-      return false || dfs(graph, current_vertex, count + 1, vertex_count, visited_nodes)
+      visited_nodes[start_vertex] = true
+      cycle_found = dfs(graph, current_vertex, visited_nodes)
+      return cycle_found if cycle_found
     end
 
     false

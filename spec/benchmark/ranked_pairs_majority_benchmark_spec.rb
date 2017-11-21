@@ -11,11 +11,10 @@ require_relative './../../app/services/generate_preferences_service.rb'
 
 RSpec.describe 'Ranked-pairs-majority benchmark' do
   before :all do
-    @ranked_pairs      = RankedPairsService.new
-    @voting_service    = VotingService.new
-    @timeout_threshold = 2
-    @repetitions       = 100
-    @folder            = 'spec/benchmark_results/ranked_pairs_majority'
+    @ranked_pairs   = RankedPairsService.new
+    @voting_service = VotingService.new
+    @repetitions    = 100
+    @folder         = 'spec/benchmark_results/ranked_pairs_majority'
     Dir.mkdir('spec/benchmark_results') unless File.exist?('spec/benchmark_results')
     Dir.mkdir(@folder) unless File.exist?(@folder)
   end
@@ -30,25 +29,18 @@ RSpec.describe 'Ranked-pairs-majority benchmark' do
       CSV.open("#{@folder}/three_round_5_voters.csv", 'wb', col_sep: '&') do |csv|
         csv << %w[Alternatives Time Output]
 
-        catch :too_slow do
-          scenarios.each_with_index do |scenario, idx|
-            puts "Benchmarking scenario #{idx}"
+        scenarios.each_with_index do |scenario, idx|
+          puts "Benchmarking scenario #{idx}"
 
-            times = []
-            @repetitions.times do |_|
-              start = Time.now
-              @voting_service.majority_ranked_pairs(scenario)
-              finish = Time.now
-              times << finish - start
-
-              if finish - start >= @timeout_threshold
-                puts 'Finished benchmark because it was too slow'
-                throw :too_slow
-              end
-            end
-
-            csv << [scenario['movies'].length, times.sum / times.length]
+          times = []
+          @repetitions.times do |_|
+            start = Time.now
+            @voting_service.majority_ranked_pairs(scenario)
+            finish = Time.now
+            times << finish - start
           end
+
+          csv << [scenario['movies'].length, times.sum / times.length]
         end
       end
     end
@@ -62,25 +54,18 @@ RSpec.describe 'Ranked-pairs-majority benchmark' do
       CSV.open("#{@folder}/three_round_25_voters.csv", 'wb', col_sep: '&') do |csv|
         csv << %w[Alternatives Time Output]
 
-        catch :too_slow do
-          scenarios.each_with_index do |scenario, idx|
-            puts "Benchmarking scenario #{idx}"
+        scenarios.each_with_index do |scenario, idx|
+          puts "Benchmarking scenario #{idx}"
 
-            times = []
-            @repetitions.times do |_|
-              start = Time.now
-              @voting_service.majority_ranked_pairs(scenario)
-              finish = Time.now
-              times << finish - start
-
-              if finish - start >= @timeout_threshold
-                puts 'Finished benchmark because it was too slow'
-                throw :too_slow
-              end
-            end
-
-            csv << [scenario['movies'].length, times.sum / times.length]
+          times = []
+          @repetitions.times do |_|
+            start = Time.now
+            @voting_service.majority_ranked_pairs(scenario)
+            finish = Time.now
+            times << finish - start
           end
+
+          csv << [scenario['movies'].length, times.sum / times.length]
         end
       end
     end
