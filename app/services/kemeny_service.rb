@@ -16,7 +16,7 @@ class KemenyService
       score = 0
 
       permutation.combination(2).to_a.each do |x, y|
-        score += new_score(x, y)
+        score += score(x, y)
       end
 
       scores[permutation] = score
@@ -25,15 +25,16 @@ class KemenyService
     scores
   end
 
-  def new_score(x, y)
-    x_score = 0
+  def score(x, y)
+    score = 0
 
     @preferences.each_value do |profile|
-      if profile.index(x) > profile.index(y)
-        x_score += 1
+      if profile.index(x) < profile.index(y)
+        score += 1
       end
     end
-    x_score
+
+    score
   end
 
   def permutations
