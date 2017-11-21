@@ -94,10 +94,10 @@ class VotingService
     winners[:time]     = MajorityService.vote(scenario['time_preferences']).first
 
     movie_preferences  = ExclusionService.exclude_one(winners[:time], scenario['associations'], scenario['movie_preferences'])
-    winners[:movie] = movie_preferences.values.first.length <= 1 ? movie_preferences.values.first.first : @ranked_pairs.resolve_timed(movie_preferences).first
+    winners[:movie] = movie_preferences.values.first.length <= 1 ? movie_preferences.values.first.first : @ranked_pairs.resolve(movie_preferences).first
 
     cinema_preferences = ExclusionService.exclude_two(winners[:time], winners[:movie], scenario['associations'], scenario['cinema_preferences'])
-    winners[:cinema] = cinema_preferences.values.first.length <= 1 ? cinema_preferences.values.first.first : @ranked_pairs.resolve_timed(cinema_preferences).first
+    winners[:cinema] = cinema_preferences.values.first.length <= 1 ? cinema_preferences.values.first.first : @ranked_pairs.resolve(cinema_preferences).first
 
     winners
   end

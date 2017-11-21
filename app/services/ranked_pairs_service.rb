@@ -14,21 +14,17 @@ class RankedPairsService
     end
 
     def to_s
-      "#{@winner}-#{@loser}"
+      "#{@winner} - #{@loser}"
     end
 
     def to_a
       [@winner, @loser]
     end
-
-    def eql?(other)
-      to_s == (other.to_s || other)
-    end
   end
 
   def resolve(preferences)
     @pairwise_results = tally(preferences)
-    sorted_pairs      = rank_sort(@pairwise_results.values)
+    sorted_pairs      = rank_sort(@pairwise_results[:values])
     graph             = lock(sorted_pairs)
     social_choice_order(graph)
   end
@@ -39,7 +35,7 @@ class RankedPairsService
     puts " - Tally time: #{(Time.now - start) * 1000}ms"
 
     start        = Time.now
-    sorted_pairs = rank_sort(@pairwise_results.values)
+    sorted_pairs = rank_sort(@pairwise_results[:values])
     puts " - Sort time: #{(Time.now - start) * 1000}ms"
 
     start = Time.now
@@ -54,8 +50,7 @@ class RankedPairsService
   end
 
   def tally(preferences)
-    pair_hash = {}
-    preferences.values.first.each { |x| pair_hash[x] = Hash.new(0) }
+    pair_hash = Hash.new { |hash, key| hash[key] = Hash.new(0) }
 
     preferences.each_value do |preference|
       preference.combination(2).to_a.each do |pair|
@@ -63,10 +58,12 @@ class RankedPairsService
       end
     end
 
-    pairs = {}
+    pairs = Hash.new { |hash, key| hash[key] = {} }
+    pairs[:values] = []
     preferences.values.first.combination(2).to_a.each do |pair|
       p = Pair.new(pair.first, pair_hash[pair.first][pair.last], pair.last, pair_hash[pair.last][pair.first])
-      pairs[p] = p
+      pairs[p.winner][p.loser] = p
+      pairs[:values] << p
     end
 
     pairs
@@ -92,7 +89,7 @@ class RankedPairsService
       elsif y.first.winner_votes > x.first.winner_votes
         sorted_array << y.shift
       else
-        loser_pair = @pairwise_results["#{x.first.loser}(#{x.first.loser_votes})-#{y.first.loser}(#{y.first.loser_votes})"] || @pairwise_results["#{y.first.loser}(#{y.first.loser_votes})-#{x.first.loser}(#{x.first.loser_votes})"]
+        loser_pair = @pairwise_results[x.first.loser][y.first.loser] || @pairwise_results[y.first.loser][x.first.loser]
         sorted_array << (loser_pair.nil? || loser_pair.loser == x.first.loser ? x.shift : y.shift)
       end
     end
