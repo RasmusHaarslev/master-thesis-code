@@ -103,6 +103,13 @@ RSpec.describe 'Schulze satisfaction benchmarking' do
 
   end
 
+  describe "perm test" do
+    it 'hat' do
+      splat = [["a1", "a2", "a3", "a4", "a5", "a6", "a7"]].flatten.uniq.permutation.to_a
+      print splat.length
+    end
+  end
+
   def get_scores(scenarios, filename, voters)
     benchmarks = Array.new
     for a in IO.readlines("#{@folder}/#{filename}")
