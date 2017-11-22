@@ -28,13 +28,19 @@ def plot_single_round_5_voters():
 	schulze_voters, schulze_times = prepare_data("../spec/benchmark_results/schulze/single_round_5_voters.csv")
 	ranked_pairs_voters, ranked_pairs_times = prepare_data("../spec/benchmark_results/ranked_pairs/single_round_5_voters.csv")
 
+	kemeny_times.append(2001)
+	kemeny_voters.append(len(kemeny_voters)+1)
+
 	plt.figure(0)
+	plt.title("5 voters, single round")
 	plt.plot(kemeny_voters, kemeny_times, label='kemeny')
 	plt.plot(schulze_voters, schulze_times, label='schulze')
 	plt.plot(ranked_pairs_voters, ranked_pairs_times, label='ranked_pairs')
 	plt.legend()
 	plt.xlabel("# of alternatives")
 	plt.ylabel("avg time to compute [ms]")
+	plt.xlim(2, 100)
+	plt.ylim(0, 200)
 	plt.savefig("../spec/benchmark_results/single_round_5_voters.pdf", format="pdf")
 	
 
@@ -43,13 +49,19 @@ def plot_single_round_25_voters():
 	schulze_voters, schulze_times = prepare_data("../spec/benchmark_results/schulze/single_round_25_voters.csv")
 	ranked_pairs_voters, ranked_pairs_times = prepare_data("../spec/benchmark_results/ranked_pairs/single_round_25_voters.csv")
 
+	kemeny_times.append(2001)
+	kemeny_voters.append(len(kemeny_voters)+1)
+
 	plt.figure(1)
+	plt.title("25 voters, single round")
 	plt.plot(kemeny_voters, kemeny_times, label='kemeny')
 	plt.plot(schulze_voters, schulze_times, label='schulze')
 	plt.plot(ranked_pairs_voters, ranked_pairs_times, label='ranked_pairs')
 	plt.legend()
 	plt.xlabel("# of alternatives")
 	plt.ylabel("avg time to compute [ms]")
+	plt.xlim(2, 100)
+	plt.ylim(0, 250)
 	plt.savefig("../spec/benchmark_results/single_round_25_voters.pdf", format="pdf")
 
 
@@ -58,13 +70,19 @@ def plot_three_rounds_5_voters():
 	schulze_voters, schulze_times = prepare_data("../spec/benchmark_results/schulze/three_round_5_voters.csv")
 	ranked_pairs_voters, ranked_pairs_times = prepare_data("../spec/benchmark_results/ranked_pairs/three_round_5_voters.csv")
 
+	kemeny_times.append(2001)
+	kemeny_voters.append(len(kemeny_voters)+1)
+
 	plt.figure(2)
+	plt.title("5 voters, three rounds")
 	plt.plot(kemeny_voters, kemeny_times, label='kemeny')
 	plt.plot(schulze_voters, schulze_times, label='schulze')
 	plt.plot(ranked_pairs_voters, ranked_pairs_times, label='ranked_pairs')
 	plt.legend()
 	plt.xlabel("# of alternatives")
 	plt.ylabel("avg time to compute [ms]")
+	plt.xlim(2, 100)
+	plt.ylim(0, 650)
 	plt.savefig("../spec/benchmark_results/three_round_5_voters.pdf", format="pdf")
 
 
@@ -73,13 +91,19 @@ def plot_three_rounds_25_voters():
 	schulze_voters, schulze_times = prepare_data("../spec/benchmark_results/schulze/three_round_25_voters.csv")
 	ranked_pairs_voters, ranked_pairs_times = prepare_data("../spec/benchmark_results/ranked_pairs/three_round_25_voters.csv")
 
+	kemeny_times.append(2001)
+	kemeny_voters.append(len(kemeny_voters)+1)
+
 	plt.figure(3)
+	plt.title("25 voters, three rounds")
 	plt.plot(kemeny_voters, kemeny_times, label='kemeny')
 	plt.plot(schulze_voters, schulze_times, label='schulze')
 	plt.plot(ranked_pairs_voters, ranked_pairs_times, label='ranked_pairs')
 	plt.legend()
 	plt.xlabel("# of alternatives")
 	plt.ylabel("avg time to compute [ms]")
+	plt.xlim(2, 100)
+	plt.ylim(0, 650)
 	plt.savefig("../spec/benchmark_results/three_round_25_voters.pdf", format="pdf")
 
 
@@ -88,13 +112,19 @@ def plot_majority_5_voters():
 	schulze_voters, schulze_times = prepare_data("../spec/benchmark_results/schulze_majority/three_round_5_voters.csv")
 	ranked_pairs_voters, ranked_pairs_times = prepare_data("../spec/benchmark_results/ranked_pairs_majority/three_round_5_voters.csv")
 
+	kemeny_times.append(2001)
+	kemeny_voters.append(len(kemeny_voters)+1)
+
 	plt.figure(4)
+	plt.title("5 voters, three rounds with majority")
 	plt.plot(kemeny_voters, kemeny_times, label='kemeny')
 	plt.plot(schulze_voters, schulze_times, label='schulze')
 	plt.plot(ranked_pairs_voters, ranked_pairs_times, label='ranked_pairs')
 	plt.legend()
 	plt.xlabel("# of alternatives")
 	plt.ylabel("avg time to compute [ms]")
+	plt.xlim(2, 100)
+	plt.ylim(0, 400)
 	plt.savefig("../spec/benchmark_results/majority_5_voters.pdf", format="pdf")
 
 
@@ -103,13 +133,19 @@ def plot_majority_25_voters():
 	schulze_voters, schulze_times = prepare_data("../spec/benchmark_results/schulze_majority/three_round_25_voters.csv")
 	ranked_pairs_voters, ranked_pairs_times = prepare_data("../spec/benchmark_results/ranked_pairs_majority/three_round_25_voters.csv")
 
+	kemeny_times.append(2001)
+	kemeny_voters.append(len(kemeny_voters)+1)
+	
 	plt.figure(5)
+	plt.title("25 voters, three rounds with majority")
 	plt.plot(kemeny_voters, kemeny_times, label='kemeny')
 	plt.plot(schulze_voters, schulze_times, label='schulze')
 	plt.plot(ranked_pairs_voters, ranked_pairs_times, label='ranked_pairs')
 	plt.legend()
 	plt.xlabel("# of alternatives")
 	plt.ylabel("avg time to compute [ms]")
+	plt.xlim(2, 100)
+	plt.ylim(0, 500)
 	plt.savefig("../spec/benchmark_results/majority_25_voters.pdf", format="pdf")
 
 

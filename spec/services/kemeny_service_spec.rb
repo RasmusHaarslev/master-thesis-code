@@ -12,4 +12,11 @@ RSpec.describe KemenyService do
       expect(@kemeny.winner(@data['movie_preferences'])).to eq ['Batman', 'Warcraft', 'Superman']
     end
   end
+
+  describe '#performance' do
+    it 'Finds best ranking for movies' do
+      hat = JSON.parse(File.read('spec/benchmark_files/5_voters/8_alternatives.json'))
+      @kemeny.winner(hat['movie_preferences'])
+    end
+  end
 end

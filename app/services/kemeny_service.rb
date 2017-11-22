@@ -29,14 +29,8 @@ class KemenyService
     score = 0
 
     @preferences.each_value do |profile|
-      y_found = false
-
-      profile.each do |alternative|
-        if alternative == x && !y_found
-          score += 1
-        elsif alternative == y
-          y_found = true
-        end
+      if profile.index(x) < profile.index(y)
+        score += 1
       end
     end
 

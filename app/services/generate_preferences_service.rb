@@ -32,8 +32,8 @@ class GeneratePreferencesService
     ass = {}
     @t.each do |time|
       junk = {}
-      @a.sample(1 + rand(@a.length)).each do |movie|
-        junk[movie] = @c.sample(1 + rand(@c.length))
+      @a.each do |movie|
+        junk[movie] = @c
       end
       ass[time] = junk
     end
