@@ -11,7 +11,7 @@ class VotingsController < ApplicationController
   # POST /votings.json
   def create
     permitted_params                = voting_params
-    permitted_params[:alternatives] = JSON.generate(permitted_params[:alternatives])
+    permitted_params[:alternatives] = JSON.generate(permitted_params[:alternatives].as_json)
     permitted_params[:code]         = SecureRandom.hex(4)
 
     @voting = Voting.new(permitted_params)
@@ -56,7 +56,10 @@ class VotingsController < ApplicationController
     params.require(:voting).permit(
       :title,
       :question,
-      { alternatives: [] }
+      alternatives: {
+          movies: [],
+        times: [],
+        cinemas: []}
     )
   end
 end

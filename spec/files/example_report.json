@@ -1,0 +1,124 @@
+{
+  "voters": [
+    "Alice",
+    "Bob",
+    "Henrik"
+  ],
+  "movies": [
+    "Batman",
+    "Pulp_fiction",
+    "The_Godfather"
+  ],
+  "times": [
+    "12:00",
+    "15:00",
+    "17:00"
+  ],
+  "cinemas": [
+    "Dagmar",
+    "Falkoner",
+    "Palads"
+  ],
+  "associations": {
+    "12:00": {
+      "Batman": [
+        "Falkoner",
+        "Palads"
+      ],
+      "The_Godfather": [
+        "Falkoner",
+        "Palads",
+        "Dagmar"
+      ]
+    },
+    "15:00": {
+      "Batman": [
+        "Falkoner",
+        "Palads",
+        "Dagmar"
+      ],
+      "The_Godfather": [
+        "Falkoner",
+        "Palads",
+        "Dagmar"
+      ]
+    },
+    "17:00":  {
+      "Batman": [
+        "Falkoner"
+      ],
+      "Pulp_fiction": [
+        "Falkoner",
+        "Palads",
+        "Dagmar"
+      ],
+      "The_Godfather": [
+        "Falkoner"
+      ]
+    }
+  },
+  "movie_preferences": {
+    "Alice": [
+      "Batman",
+      "Pulp_fiction",
+      "The_Godfather"
+    ],
+    "Bob": [
+      "Pulp_fiction",
+      "Batman",
+      "The_Godfather"
+    ],
+    "Henrik": [
+      "Pulp_fiction",
+      "The_Godfather",
+      "Batman"
+    ]
+  },
+  "time_preferences": {
+    "Alice": [
+      "12:00",
+      "15:00",
+      "17:00"
+    ],
+    "Bob": [
+      "12:00",
+      "15:00",
+      "17:00"
+    ],
+    "Henrik": [
+      "15:00",
+      "17:00",
+      "12:00"
+    ]
+  },
+  "time_votes": {
+    "Alice": [
+      "12:00",
+      "15:00"
+    ],
+    "Bob": [
+      "12:00"
+    ],
+    "Henrik": [
+      "15:00",
+      "17:00"
+    ]
+  },
+  "cinema_preferences": {
+    "Alice": [
+      "Falkoner",
+      "Dagmar",
+      "Palads"
+    ],
+    "Bob": [
+      "Palads",
+      "Falkoner",
+      "Dagmar"
+    ],
+    "Henrik": [
+      "Palads",
+      "Falkoner",
+      "Dagmar"
+    ]
+  }
+}

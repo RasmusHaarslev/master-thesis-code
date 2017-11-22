@@ -12,6 +12,7 @@ class OutputReaderService
     index_output_file_2 = file_2_headers.index("Output")
 
     equal_output = 0
+    rows = 0
     if file_1.length > file_2.length
       rows = file_2.length
     else
@@ -20,7 +21,7 @@ class OutputReaderService
 
 
     for i in 0..rows-1
-      equal_output += 1 if file_1[i][index_output_file_1] == file_2[i][index_output_file_2]
+      equal_output = equal_output + 1 if file_1[i][index_output_file_1] == file_2[i][index_output_file_2]
     end
 
     equal_output.to_f/rows
