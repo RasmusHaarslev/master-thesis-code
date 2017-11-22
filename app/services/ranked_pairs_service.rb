@@ -108,12 +108,7 @@ class RankedPairsService
     graph
   end
 
-  def cycles?(graph, start_vertex)
-    visited_nodes = {}
-    dfs(graph, start_vertex, visited_nodes)
-  end
-
-  def dfs(graph, start_vertex, visited_nodes)
+  def cycles?(graph, start_vertex, visited_nodes = {})
     return true if visited_nodes[start_vertex]
 
     graph.each_adjacent(start_vertex).each do |current_vertex|
