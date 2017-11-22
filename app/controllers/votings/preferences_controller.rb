@@ -8,19 +8,19 @@ class Votings::PreferencesController < ApplicationController
 
   # POST /votings/:voting_id/preferences
   def create
-    @preference = Voting::Preference.new(preference: JSON.generate(preference_params[:preference]))
+    @preference = Voting::Preference.new(preference: JSON.generate(preference_params[:preference].as_json))
 
-    unless preference_params[:preference].uniq.length == preference_params[:preference].length
-      render json: @preference.errors, status: :unprocessable_entity
-      return
-    end
-
-    preference_params[:preference].each do |a|
-      unless @voting.alternatives.include? a
-        render json: @preference.errors, status: :unprocessable_entity
-        return
-      end
-    end
+    # unless preference_params[:preference].uniq.length == preference_params[:preference].length
+    #   render json: @preference.errors, status: :unprocessable_entity
+    #   return
+    # end
+    #
+    # preference_params[:preference].each do |a|
+    #   unless @voting.alternatives.include? a
+    #     render json: @preference.errors, status: :unprocessable_entity
+    #     return
+    #   end
+    # end
 
     if @voting.preferences << @preference
       render nothing: true, status: :ok
@@ -38,7 +38,11 @@ class Votings::PreferencesController < ApplicationController
 
   def preference_params
     params.require(:preference).permit(
-      { preference: [] }
+      { preference: {
+          cinema_preferences: [],
+          time_preferences: [],
+          movie_preferences: []}
+      }
     )
   end
 end

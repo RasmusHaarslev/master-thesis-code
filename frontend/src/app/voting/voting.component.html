@@ -4,7 +4,7 @@
 <p>{{question}}</p>
 
 <app-drag-list
-  [candidates]="alternatives">
+  [candidates]="upForVote">
 </app-drag-list>
-<button md-raised-button color="primary" (click)="submitVote()">Stem</button>
+<button md-raised-button color="primary" (click)="vote()">Stem</button>
 
