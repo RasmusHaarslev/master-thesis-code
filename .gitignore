@@ -25,3 +25,5 @@
 
 /spec/benchmark_files
 /spec/benchmark_results
+/spec/comparison/files
+/spec/comparison/results
