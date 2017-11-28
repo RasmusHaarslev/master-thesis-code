@@ -1,6 +1,6 @@
 require 'spec_helper'
 require 'rails'
-require_relative './../../app/services/output_reader_service.rb'
+require_relative './../../app/services/tput_reader_service.rb'
 
 
 RSpec.describe OutputReaderService do

@@ -3,7 +3,7 @@ require 'json'
 
 RSpec.describe 'Schulze satisfaction benchmarking' do
   before :all do
-    @folder = 'spec/benchmark_results'
+    @result_folder = 'spec/benchmark_results'
     @result_folder = 'spec/satisfaction_results'
     Dir.mkdir(@result_folder) unless File.exist?(@result_folder)
     Dir.mkdir("#{@result_folder}/schulze") unless File.exist?("#{@result_folder}/schulze")
@@ -112,7 +112,7 @@ RSpec.describe 'Schulze satisfaction benchmarking' do
 
   def get_scores(scenarios, filename, voters)
     benchmarks = Array.new
-    for a in IO.readlines("#{@folder}/#{filename}")
+    for a in IO.readlines("#{@result_folder}/#{filename}")
       ranking = a.split('&')[2].split(',')
       benchmarks << ranking
     end
