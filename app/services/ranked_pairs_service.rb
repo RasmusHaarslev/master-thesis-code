@@ -113,7 +113,7 @@ class RankedPairsService
 
     graph.each_adjacent(start_vertex).each do |current_vertex|
       visited_nodes[start_vertex] = true
-      cycle_found = dfs(graph, current_vertex, visited_nodes)
+      cycle_found = cycles?(graph, current_vertex, visited_nodes)
       return cycle_found if cycle_found
     end
 
