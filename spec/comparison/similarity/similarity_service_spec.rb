@@ -7,92 +7,47 @@ RSpec.describe SimilarityService do
   before :all do
     @reader = SimilarityService.new
 
-    @root_path_results = 'spec/comparison/results'
+    @ranked_pairs_results = 'spec/comparison/results/ranked_pairs'
+    @kemeny_results       = 'spec/comparison/results/kemeny'
+    @schulze_results      = 'spec/comparison/results/schulze'
+    @file_names           = Dir["#{@ranked_pairs_results}/*"].map { |path| path.split('/').last }.sort_by { |name| name.split('_').first.to_i }
   end
 
   describe '#compare social ordering' do
     it 'Schulze vs. Kemeny' do
       puts 'Schulze vs. Kemeny'
 
-      result2 = @reader.compare_social_ordering(
-        "#{@root_path_results}/schulze/2_alternatives.csv",
-        "#{@root_path_results}/kemeny/2_alternatives.csv"
-      )
-      puts "2 alternatives: #{result2 * 100}% similar"
-
-      result3 = @reader.compare_social_ordering(
-        "#{@root_path_results}/schulze/3_alternatives.csv",
-        "#{@root_path_results}/kemeny/3_alternatives.csv"
-      )
-      puts "3 alternatives: #{result3 * 100}% similar"
-
-      result4 = @reader.compare_social_ordering(
-        "#{@root_path_results}/schulze/4_alternatives.csv",
-        "#{@root_path_results}/kemeny/4_alternatives.csv"
-      )
-      puts "4 alternatives: #{result4 * 100}% similar"
-
-      result5 = @reader.compare_social_ordering(
-        "#{@root_path_results}/schulze/5_alternatives.csv",
-        "#{@root_path_results}/kemeny/5_alternatives.csv"
-      )
-      puts "5 alternatives: #{result5 * 100}% similar"
+      @file_names.each do |file_name|
+        result = @reader.compare_social_ordering(
+          "#{@schulze_results}/#{file_name}",
+          "#{@kemeny_results}/#{file_name}"
+        )
+        puts "#{file_name.split('_').first.to_i} alternatives: #{result * 100}% similar"
+      end
     end
 
     it 'Schulze vs. Ranked pairs' do
       puts 'Schulze vs. Ranked pairs'
 
-      result2 = @reader.compare_social_ordering(
-        "#{@root_path_results}/schulze/2_alternatives.csv",
-        "#{@root_path_results}/ranked_pairs/2_alternatives.csv"
-      )
-      puts "2 alternatives: #{result2 * 100}% similar"
-
-      result3 = @reader.compare_social_ordering(
-        "#{@root_path_results}/schulze/3_alternatives.csv",
-        "#{@root_path_results}/ranked_pairs/3_alternatives.csv"
-      )
-      puts "3 alternatives: #{result3 * 100}% similar"
-
-      result4 = @reader.compare_social_ordering(
-        "#{@root_path_results}/schulze/4_alternatives.csv",
-        "#{@root_path_results}/ranked_pairs/4_alternatives.csv"
-      )
-      puts "4 alternatives: #{result4 * 100}% similar"
-
-      result5 = @reader.compare_social_ordering(
-        "#{@root_path_results}/schulze/5_alternatives.csv",
-        "#{@root_path_results}/ranked_pairs/5_alternatives.csv"
-      )
-      puts "5 alternatives: #{result5 * 100}% similar"
+      @file_names.each do |file_name|
+        result = @reader.compare_social_ordering(
+          "#{@schulze_results}/#{file_name}",
+          "#{@ranked_pairs_results}/#{file_name}"
+        )
+        puts "#{file_name.split('_').first.to_i} alternatives: #{result * 100}% similar"
+      end
     end
 
-    it 'Kemeny vs. Ranked pairs' do
-      puts 'Kemeny vs. Ranked pairs'
+    it 'Ranked pairs vs. Kemeny' do
+      puts 'Ranked pairs vs. Kemeny'
 
-      result2 = @reader.compare_social_ordering(
-        "#{@root_path_results}/kemeny/2_alternatives.csv",
-        "#{@root_path_results}/ranked_pairs/2_alternatives.csv"
-      )
-      puts "2 alternatives: #{result2 * 100}% similar"
-
-      result3 = @reader.compare_social_ordering(
-        "#{@root_path_results}/kemeny/3_alternatives.csv",
-        "#{@root_path_results}/ranked_pairs/3_alternatives.csv"
-      )
-      puts "3 alternatives: #{result3 * 100}% similar"
-
-      result4 = @reader.compare_social_ordering(
-        "#{@root_path_results}/kemeny/4_alternatives.csv",
-        "#{@root_path_results}/ranked_pairs/4_alternatives.csv"
-      )
-      puts "4 alternatives: #{result4 * 100}% similar"
-
-      result5 = @reader.compare_social_ordering(
-        "#{@root_path_results}/kemeny/5_alternatives.csv",
-        "#{@root_path_results}/ranked_pairs/5_alternatives.csv"
-      )
-      puts "5 alternatives: #{result5 * 100}% similar"
+      @file_names.each do |file_name|
+        result = @reader.compare_social_ordering(
+          "#{@ranked_pairs_results}/#{file_name}",
+          "#{@kemeny_results}/#{file_name}"
+        )
+        puts "#{file_name.split('_').first.to_i} alternatives: #{result * 100}% similar"
+      end
     end
   end
 
@@ -100,85 +55,37 @@ RSpec.describe SimilarityService do
     it 'Schulze vs. Kemeny' do
       puts 'Schulze vs. Kemeny'
 
-      result2 = @reader.compare_winner(
-        "#{@root_path_results}/schulze/2_alternatives.csv",
-        "#{@root_path_results}/kemeny/2_alternatives.csv"
-      )
-      puts "2 alternatives: #{result2 * 100}% similar"
-
-      result3 = @reader.compare_winner(
-        "#{@root_path_results}/schulze/3_alternatives.csv",
-        "#{@root_path_results}/kemeny/3_alternatives.csv"
-      )
-      puts "3 alternatives: #{result3 * 100}% similar"
-
-      result4 = @reader.compare_winner(
-        "#{@root_path_results}/schulze/4_alternatives.csv",
-        "#{@root_path_results}/kemeny/4_alternatives.csv"
-      )
-      puts "4 alternatives: #{result4 * 100}% similar"
-
-      result5 = @reader.compare_winner(
-        "#{@root_path_results}/schulze/5_alternatives.csv",
-        "#{@root_path_results}/kemeny/5_alternatives.csv"
-      )
-      puts "5 alternatives: #{result5 * 100}% similar"
+      @file_names.each do |file_name|
+        result = @reader.compare_winner(
+          "#{@schulze_results}/#{file_name}",
+          "#{@kemeny_results}/#{file_name}"
+        )
+        puts "#{file_name.split('_').first.to_i} alternatives: #{result * 100}% similar"
+      end
     end
 
     it 'Schulze vs. Ranked pairs' do
       puts 'Schulze vs. Ranked pairs'
 
-      result2 = @reader.compare_winner(
-        "#{@root_path_results}/schulze/2_alternatives.csv",
-        "#{@root_path_results}/ranked_pairs/2_alternatives.csv"
-      )
-      puts "2 alternatives: #{result2 * 100}% similar"
-
-      result3 = @reader.compare_winner(
-        "#{@root_path_results}/schulze/3_alternatives.csv",
-        "#{@root_path_results}/ranked_pairs/3_alternatives.csv"
-      )
-      puts "3 alternatives: #{result3 * 100}% similar"
-
-      result4 = @reader.compare_winner(
-        "#{@root_path_results}/schulze/4_alternatives.csv",
-        "#{@root_path_results}/ranked_pairs/4_alternatives.csv"
-      )
-      puts "4 alternatives: #{result4 * 100}% similar"
-
-      result5 = @reader.compare_winner(
-        "#{@root_path_results}/schulze/5_alternatives.csv",
-        "#{@root_path_results}/ranked_pairs/5_alternatives.csv"
-      )
-      puts "5 alternatives: #{result5 * 100}% similar"
+      @file_names.each do |file_name|
+        result = @reader.compare_winner(
+          "#{@schulze_results}/#{file_name}",
+          "#{@ranked_pairs_results}/#{file_name}"
+        )
+        puts "#{file_name.split('_').first.to_i} alternatives: #{result * 100}% similar"
+      end
     end
 
-    it 'Kemeny vs. Ranked pairs' do
-      puts 'Kemeny vs. Ranked pairs'
+    it 'Ranked pairs vs. Kemeny' do
+      puts 'Ranked pairs vs. Kemeny'
 
-      result2 = @reader.compare_winner(
-        "#{@root_path_results}/kemeny/2_alternatives.csv",
-        "#{@root_path_results}/ranked_pairs/2_alternatives.csv"
-      )
-      puts "2 alternatives: #{result2 * 100}% similar"
-
-      result3 = @reader.compare_winner(
-        "#{@root_path_results}/kemeny/3_alternatives.csv",
-        "#{@root_path_results}/ranked_pairs/3_alternatives.csv"
-      )
-      puts "3 alternatives: #{result3 * 100}% similar"
-
-      result4 = @reader.compare_winner(
-        "#{@root_path_results}/kemeny/4_alternatives.csv",
-        "#{@root_path_results}/ranked_pairs/4_alternatives.csv"
-      )
-      puts "4 alternatives: #{result4 * 100}% similar"
-
-      result5 = @reader.compare_winner(
-        "#{@root_path_results}/kemeny/5_alternatives.csv",
-        "#{@root_path_results}/ranked_pairs/5_alternatives.csv"
-      )
-      puts "5 alternatives: #{result5 * 100}% similar"
+      @file_names.each do |file_name|
+        result = @reader.compare_winner(
+          "#{@ranked_pairs_results}/#{file_name}",
+          "#{@kemeny_results}/#{file_name}"
+        )
+        puts "#{file_name.split('_').first.to_i} alternatives: #{result * 100}% similar"
+      end
     end
   end
 end
