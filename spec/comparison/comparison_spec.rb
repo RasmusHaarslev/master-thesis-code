@@ -1,5 +1,4 @@
 require 'spec_helper'
-require 'csv'
 require_relative './../../app/services/voting_service.rb'
 require_relative './../../app/services/schulze_service.rb'
 require_relative './../../app/services/kemeny_service.rb'
@@ -22,31 +21,67 @@ RSpec.describe 'Comparison benchmarkk' do
     Dir.mkdir("#{@result_folder}/schulze") unless File.exist?("#{@result_folder}/schulze")
   end
 
+  describe '#Ranked pairs' do
+    it 'does the thing' do
+      puts 'Reading scenarios'
+      scenario_hash = {}
+      Dir["#{@scenario_folder}/*"].sort_by { |x| x.split('/').last.split('_').first.to_i }.each do |path_name|
+        folder_name = path_name.split('/').last
+        scenario_hash[folder_name] = Dir["#{path_name}/*"].sort_by { |x| x.split('/').last.split('_').last.split('.').first.to_i }.map do |fname|
+          JSON.parse(File.read(fname))
+        end
+      end
+
+      scenario_hash.each do |key, scenarios|
+        File.open("#{@result_folder}/ranked_pairs/#{key}.csv", 'w') do |f|
+          scenarios.each do |scenario|
+            f.write @ranked_pairs.resolve(scenario['movie_preferences']).join(',')
+            f.write "\n"
+          end
+        end
+      end
+    end
+  end
+
+  describe '#kemeny' do
+    it 'does the thing' do
+      puts 'Reading scenarios'
+      scenario_hash = {}
+      Dir["#{@scenario_folder}/*"].sort_by { |x| x.split('/').last.split('_').first.to_i }.each do |path_name|
+        folder_name = path_name.split('/').last
+        scenario_hash[folder_name] = Dir["#{path_name}/*"].sort_by { |x| x.split('/').last.split('_').last.split('.').first.to_i }.map do |fname|
+          JSON.parse(File.read(fname))
+        end
+      end
+
+      scenario_hash.each do |key, scenarios|
+        File.open("#{@result_folder}/kemeny/#{key}.csv", 'w') do |f|
+          scenarios.each do |scenario|
+            f.write @kemeny.winner(scenario['movie_preferences']).join(',')
+            f.write "\n"
+          end
+        end
+      end
+    end
+  end
+
   describe '#Schulze' do
     it 'does the thing' do
       puts 'Reading scenarios'
-      scenarios = {}
-      Dir["#{@scenario_folder}/*"]
-      scenarios = Dir["#{@scenario_folder}/5_voters/*"].sort_by { |x| x.split('/').last.split('_').first.to_i }.map do |fname|
-        JSON.parse(File.read(fname))
+      scenario_hash = {}
+      Dir["#{@scenario_folder}/*"].sort_by { |x| x.split('/').last.split('_').first.to_i }.each do |path_name|
+        folder_name = path_name.split('/').last
+        scenario_hash[folder_name] = Dir["#{path_name}/*"].sort_by { |x| x.split('/').last.split('_').last.split('.').first.to_i }.map do |fname|
+          JSON.parse(File.read(fname))
+        end
       end
 
-      CSV.open("#{@result_folder}/single_round_5_voters.csv", 'wb', col_sep: '&') do |csv|
-        csv << %w[Alternatives Time Output]
-
-        scenarios.each_with_index do |scenario, idx|
-          puts "Benchmarking scenario #{idx}"
-
-          times   = []
-          winners = nil
-          @repetitions.times do |_|
-            start   = Time.now
-            winners = @schulze.calculate_schulze(scenario['movie_preferences'])
-            finish  = Time.now
-            times << finish - start
+      scenario_hash.each do |key, scenarios|
+        File.open("#{@result_folder}/schulze/#{key}.csv", 'w') do |f|
+          scenarios.each do |scenario|
+            f.write @schulze.calculate_schulze(scenario['movie_preferences']).join(',')
+            f.write "\n"
           end
-
-          csv << [scenario['movies'].length, times.sum / times.length, winners.join(',')]
         end
       end
     end
