@@ -3,141 +3,97 @@ require 'json'
 
 RSpec.describe 'Schulze satisfaction benchmarking' do
   before :all do
-    @result_folder = 'spec/benchmark_results'
-    @result_folder = 'spec/satisfaction_results'
-    Dir.mkdir(@result_folder) unless File.exist?(@result_folder)
-    Dir.mkdir("#{@result_folder}/schulze") unless File.exist?("#{@result_folder}/schulze")
-    Dir.mkdir("#{@result_folder}/ranked_pairs") unless File.exist?("#{@result_folder}/ranked_pairs")
-    Dir.mkdir("#{@result_folder}/kemeny") unless File.exist?("#{@result_folder}/kemeny")
+    @scenario_folder = 'spec/comparison/scenarios'
+    @result_folder   = 'spec/comparison/results'
   end
 
-  describe '#Schulze single round' do
-    it '5 voters' do
-      puts 'Reading scenarios'
-      scenarios = Dir['spec/benchmark_files/5_voters/*'].sort_by { |x| x.split('/').last.split('_').first.to_i }.map do |fname|
-        JSON.parse(File.read(fname))
+  describe '#Satisfaction scores' do
+    it 'Ranked pairs' do
+      puts 'Ranked pairs satisfaction'
+
+      scenario_hash = {}
+      Dir["#{@scenario_folder}/*"].sort_by { |x| x.split('/').last.split('_').first.to_i }.each do |path_name|
+        folder_name                = path_name.split('/').last
+        scenario_hash[folder_name] = Dir["#{path_name}/*"].sort_by { |x| x.split('/').last.split('_').last.split('.').first.to_i }.map do |fname|
+          JSON.parse(File.read(fname))
+        end
       end
 
-      result = get_scores(scenarios, 'schulze/single_round_5_voters.csv', 5)
-
-      File.open("#{@result_folder}/schulze/single_round_5_voters.csv", 'w+') do |f|
-        f.puts(result)
+      social_orderings = {}
+      scenario_hash.each do |key, scenario|
+        social_orderings[key] = File.readlines("#{@result_folder}/ranked_pairs/#{key}.csv").map { |line| line.split(',') }
       end
 
-
-    end
-
-
-    it '25 voters' do
-
-      puts 'Reading scenarios'
-      scenarios = Dir['spec/benchmark_files/25_voters/*'].sort_by { |x| x.split('/').last.split('_').first.to_i }.map do |fname|
-        JSON.parse(File.read(fname))
-      end
-
-      result = get_scores(scenarios, 'schulze/single_round_25_voters.csv', 25)
-
-      File.open("#{@result_folder}/schulze/single_round_25_voters.csv", 'w+') do |f|
-        f.puts(result)
+      scenario_hash.each do |key, scenarios|
+        score = get_score(scenarios, social_orderings[key])
+        puts "#{key.split('_').first.to_i} alternatives: #{score * 100}% satisfaction"
       end
     end
 
+    it 'Kemeny' do
+      puts 'Kemeny satisfaction'
 
-  end
-
-  describe '#Ranked Pairs single round' do
-    it '5 voters' do
-      puts 'Reading scenarios'
-      scenarios = Dir['spec/benchmark_files/5_voters/*'].sort_by { |x| x.split('/').last.split('_').first.to_i }.map do |fname|
-        JSON.parse(File.read(fname))
+      scenario_hash = {}
+      Dir["#{@scenario_folder}/*"].sort_by { |x| x.split('/').last.split('_').first.to_i }.each do |path_name|
+        folder_name                = path_name.split('/').last
+        scenario_hash[folder_name] = Dir["#{path_name}/*"].sort_by { |x| x.split('/').last.split('_').last.split('.').first.to_i }.map do |fname|
+          JSON.parse(File.read(fname))
+        end
       end
 
-      result = get_scores(scenarios, 'ranked_pairs/single_round_5_voters.csv', 5)
-
-      File.open("#{@result_folder}/ranked_pairs/single_round_5_voters.csv", 'w+') do |f|
-        f.puts(result)
-      end
-    end
-
-    it '25 voters' do
-      puts 'Reading scenarios'
-      scenarios = Dir['spec/benchmark_files/25_voters/*'].sort_by { |x| x.split('/').last.split('_').first.to_i }.map do |fname|
-        JSON.parse(File.read(fname))
+      social_orderings = {}
+      scenario_hash.each do |key, scenario|
+        social_orderings[key] = File.readlines("#{@result_folder}/kemeny/#{key}.csv").map { |line| line.split(',') }
       end
 
-      result = get_scores(scenarios, 'ranked_pairs/single_round_25_voters.csv', 25)
-
-      File.open("#{@result_folder}/ranked_pairs/single_round_25_voters.csv", 'w+') do |f|
-        f.puts(result)
+      scenario_hash.each do |key, scenarios|
+        score = get_score(scenarios, social_orderings[key])
+        puts "#{key.split('_').first.to_i} alternatives: #{score * 100}% satisfaction"
       end
     end
 
-  end
+    it 'Schulze' do
+      puts 'Schulze satisfaction'
 
-  describe '#Kemeny-Young single round' do
-    it '5 voters' do
-      puts 'Reading scenarios'
-      scenarios = Dir['spec/benchmark_files/5_voters/*'].sort_by { |x| x.split('/').last.split('_').first.to_i }.map do |fname|
-        JSON.parse(File.read(fname))
+      scenario_hash = {}
+      Dir["#{@scenario_folder}/*"].sort_by { |x| x.split('/').last.split('_').first.to_i }.each do |path_name|
+        folder_name                = path_name.split('/').last
+        scenario_hash[folder_name] = Dir["#{path_name}/*"].sort_by { |x| x.split('/').last.split('_').last.split('.').first.to_i }.map do |fname|
+          JSON.parse(File.read(fname))
+        end
       end
 
-      result = get_scores(scenarios, 'kemeny/single_round_5_voters.csv', 5)
-
-      File.open("#{@result_folder}/kemeny/single_round_5_voters.csv", 'w+') do |f|
-        f.puts(result)
-      end
-    end
-
-    it '25 voters' do
-      puts 'Reading scenarios'
-      scenarios = Dir['spec/benchmark_files/25_voters/*'].sort_by { |x| x.split('/').last.split('_').first.to_i }.map do |fname|
-        JSON.parse(File.read(fname))
+      social_orderings = {}
+      scenario_hash.each do |key, scenario|
+        social_orderings[key] = File.readlines("#{@result_folder}/schulze/#{key}.csv").map { |line| line.split(',') }
       end
 
-      result = get_scores(scenarios, 'kemeny/single_round_25_voters.csv', 25)
-
-      File.open("#{@result_folder}/kemeny/single_round_25_voters.csv", 'w+') do |f|
-        f.puts(result)
+      scenario_hash.each do |key, scenarios|
+        score = get_score(scenarios, social_orderings[key])
+        puts "#{key.split('_').first.to_i} alternatives: #{score * 100}% satisfaction"
       end
-    end
-
-  end
-
-  describe "perm test" do
-    it 'hat' do
-      splat = [["a1", "a2", "a3", "a4", "a5", "a6", "a7"]].flatten.uniq.permutation.to_a
-      print splat.length
     end
   end
 
-  def get_scores(scenarios, filename, voters)
-    benchmarks = Array.new
-    for a in IO.readlines("#{@result_folder}/#{filename}")
-      ranking = a.split('&')[2].split(',')
-      benchmarks << ranking
-    end
-    benchmarks.shift
+  def get_score(scenarios, social_orderings)
+    voters = scenarios.first['voters'].length.to_f
 
-    result = ['Alternatives&Score&Output']
-    satisfaction_score = 0
-    benchmarks.zip(scenarios).each_with_index do | (results, scenario), index |
-      #puts index, results, scenario
-      average_score = 0.0
-      scenario['movie_preferences'].values.each do |prefs|
-        winner = results[0]
-        index = prefs.index(winner) + 1
-        satisfaction_score += calculate_score(index.to_f+1, ranking.length.to_f)
-        average_score += calculate_score(index.to_f+1, ranking.length.to_f)
+    satisfaction_scores = []
+    social_orderings.each_with_index do |social_ordering, index|
+      scenario_score = 0.0
+
+      scenarios[index]['movie_preferences'].values.each do |preferences|
+        index          = preferences.index(social_ordering.first) + 1
+        scenario_score += calculate_score(index, social_ordering.length)
       end
-      result.push("#{scenario['movies'].length}&#{average_score/scenario['voters'].length.to_f}&#{scenario['movie_preferences'].values.join(',')}")
-    end
-    puts filename.split('.')[0].gsub('/', ': '), satisfaction_score /= (benchmarks.length*voters.to_f)
 
-    result
+      satisfaction_scores << scenario_score / voters
+    end
+
+    satisfaction_scores.sum / scenarios.length.to_f
   end
 
   def calculate_score(index, length)
-    (index/length-1)/(1.to_f/length-1)
+    (index.to_f / length.to_f - 1) / (1.to_f / length.to_f - 1)
   end
-
 end
