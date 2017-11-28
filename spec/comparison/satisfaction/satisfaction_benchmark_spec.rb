@@ -26,7 +26,7 @@ RSpec.describe 'Schulze satisfaction benchmarking' do
 
       scenario_hash.each do |key, scenarios|
         score = get_score(scenarios, social_orderings[key])
-        puts "#{key.split('_').first.to_i} alternatives: #{score * 100}% satisfaction"
+        puts "#{key.split('_').first.to_i} alternatives: #{score}"
       end
     end
 
@@ -48,7 +48,7 @@ RSpec.describe 'Schulze satisfaction benchmarking' do
 
       scenario_hash.each do |key, scenarios|
         score = get_score(scenarios, social_orderings[key])
-        puts "#{key.split('_').first.to_i} alternatives: #{score * 100}% satisfaction"
+        puts "#{key.split('_').first.to_i} alternatives: #{score}"
       end
     end
 
@@ -70,7 +70,7 @@ RSpec.describe 'Schulze satisfaction benchmarking' do
 
       scenario_hash.each do |key, scenarios|
         score = get_score(scenarios, social_orderings[key])
-        puts "#{key.split('_').first.to_i} alternatives: #{score * 100}% satisfaction"
+        puts "#{key.split('_').first.to_i} alternatives: #{score}"
       end
     end
   end
