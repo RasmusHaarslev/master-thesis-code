@@ -25,6 +25,8 @@ RSpec.describe 'Comparison benchmarkk' do
   describe '#Schulze' do
     it 'does the thing' do
       puts 'Reading scenarios'
+      scenarios = {}
+      Dir["#{@scenario_folder}/*"]
       scenarios = Dir["#{@scenario_folder}/5_voters/*"].sort_by { |x| x.split('/').last.split('_').first.to_i }.map do |fname|
         JSON.parse(File.read(fname))
       end
