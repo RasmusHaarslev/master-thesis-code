@@ -40,7 +40,7 @@ def plot_single_round_5_voters():
 	plt.xlabel("# of alternatives")
 	plt.ylabel("avg time to compute [ms]")
 	plt.xlim(2, 100)
-	plt.ylim(0, 200)
+	plt.ylim(0, 1000)
 	plt.savefig("../spec/benchmark_results/single_round_5_voters.pdf", format="pdf")
 	
 
@@ -61,7 +61,7 @@ def plot_single_round_25_voters():
 	plt.xlabel("# of alternatives")
 	plt.ylabel("avg time to compute [ms]")
 	plt.xlim(2, 100)
-	plt.ylim(0, 250)
+	plt.ylim(0, 1000)
 	plt.savefig("../spec/benchmark_results/single_round_25_voters.pdf", format="pdf")
 
 
@@ -82,7 +82,7 @@ def plot_three_rounds_5_voters():
 	plt.xlabel("# of alternatives")
 	plt.ylabel("avg time to compute [ms]")
 	plt.xlim(2, 100)
-	plt.ylim(0, 650)
+	plt.ylim(0, 1000)
 	plt.savefig("../spec/benchmark_results/three_round_5_voters.pdf", format="pdf")
 
 
@@ -103,7 +103,7 @@ def plot_three_rounds_25_voters():
 	plt.xlabel("# of alternatives")
 	plt.ylabel("avg time to compute [ms]")
 	plt.xlim(2, 100)
-	plt.ylim(0, 650)
+	plt.ylim(0, 1000)
 	plt.savefig("../spec/benchmark_results/three_round_25_voters.pdf", format="pdf")
 
 
@@ -124,7 +124,7 @@ def plot_majority_5_voters():
 	plt.xlabel("# of alternatives")
 	plt.ylabel("avg time to compute [ms]")
 	plt.xlim(2, 100)
-	plt.ylim(0, 400)
+	plt.ylim(0, 1000)
 	plt.savefig("../spec/benchmark_results/majority_5_voters.pdf", format="pdf")
 
 
@@ -145,7 +145,7 @@ def plot_majority_25_voters():
 	plt.xlabel("# of alternatives")
 	plt.ylabel("avg time to compute [ms]")
 	plt.xlim(2, 100)
-	plt.ylim(0, 500)
+	plt.ylim(0, 1000)
 	plt.savefig("../spec/benchmark_results/majority_25_voters.pdf", format="pdf")
 
 
