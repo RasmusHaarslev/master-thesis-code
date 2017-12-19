@@ -19,7 +19,7 @@ def stringify(words1, words2):
 
 def jaro_winkler_distance(words1, words2):
 	word1, word2 = stringify(words1, words2)
-	return jw.get_jaro_distance(word1, word2, winkler=True, scaling=0.1)
+	return jw.get_jaro_distance(word1, word2, winkler=True, scaling=0.25)
 
 def prepare_data(file):
 	return map(lambda line: line.rstrip().split(','), file.readlines())

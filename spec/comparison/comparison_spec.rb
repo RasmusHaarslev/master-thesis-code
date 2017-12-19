@@ -26,7 +26,7 @@ RSpec.describe 'Comparison benchmarkk' do
       puts 'Reading scenarios'
       scenario_hash = {}
       Dir["#{@scenario_folder}/*"].sort_by { |x| x.split('/').last.split('_').first.to_i }.each do |path_name|
-        folder_name = path_name.split('/').last
+        folder_name                = path_name.split('/').last
         scenario_hash[folder_name] = Dir["#{path_name}/*"].sort_by { |x| x.split('/').last.split('_').last.split('.').first.to_i }.map do |fname|
           JSON.parse(File.read(fname))
         end
@@ -48,7 +48,7 @@ RSpec.describe 'Comparison benchmarkk' do
       puts 'Reading scenarios'
       scenario_hash = {}
       Dir["#{@scenario_folder}/*"].sort_by { |x| x.split('/').last.split('_').first.to_i }.each do |path_name|
-        folder_name = path_name.split('/').last
+        folder_name                = path_name.split('/').last
         scenario_hash[folder_name] = Dir["#{path_name}/*"].sort_by { |x| x.split('/').last.split('_').last.split('.').first.to_i }.map do |fname|
           JSON.parse(File.read(fname))
         end
@@ -70,7 +70,7 @@ RSpec.describe 'Comparison benchmarkk' do
       puts 'Reading scenarios'
       scenario_hash = {}
       Dir["#{@scenario_folder}/*"].sort_by { |x| x.split('/').last.split('_').first.to_i }.each do |path_name|
-        folder_name = path_name.split('/').last
+        folder_name                = path_name.split('/').last
         scenario_hash[folder_name] = Dir["#{path_name}/*"].sort_by { |x| x.split('/').last.split('_').last.split('.').first.to_i }.map do |fname|
           JSON.parse(File.read(fname))
         end
@@ -84,6 +84,20 @@ RSpec.describe 'Comparison benchmarkk' do
           end
         end
       end
+    end
+  end
+
+  describe '#output' do
+    it 'does the thing' do
+      alternatives = 5
+      number = 0
+      file_name = Dir["#{@scenario_folder}/#{alternatives}_alternatives/*"][number]
+      scenario = JSON.parse(File.read(file_name))
+
+      puts "--- File name: #{file_name} ---"
+      puts "Ranked pairs output: #{@ranked_pairs.resolve(scenario['movie_preferences']).join(', ')}"
+      puts "Kemeny-young output: #{@kemeny.winner(scenario['movie_preferences']).join(', ')}"
+      puts "Schulze output: #{@schulze.calculate_schulze(scenario['movie_preferences']).join(', ')}"
     end
   end
 end
