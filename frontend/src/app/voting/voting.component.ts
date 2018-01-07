@@ -54,10 +54,10 @@ export class VotingComponent implements OnInit {
         'preference': this.preferences
       }
     };
-    console.log(vote);
     this.http.post('api/votings/'+ this.code + '/preferences', vote).subscribe(data => {
-      this.router.navigate(['result', this.code]);
+
     });
+    this.router.navigate(['result', this.code]);
   }
 
 

@@ -47,8 +47,7 @@ const appRoutes: Routes = [
     HttpClientModule,
     DndModule.forRoot(),
     RouterModule.forRoot(
-      appRoutes,
-      { enableTracing: false } // <-- debugging purposes only
+      appRoutes// <-- debugging purposes only
     )
   ],
   exports: [BrowserModule],

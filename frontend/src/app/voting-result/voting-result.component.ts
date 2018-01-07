@@ -10,6 +10,7 @@ import {HttpClient} from "@angular/common/http";
 export class VotingResultComponent implements OnInit {
   public schulzeResult;
   public kemenieResult;
+  public rankedResult;
   constructor(private activatedRoute: ActivatedRoute,
               private http: HttpClient) { }
 
@@ -19,8 +20,11 @@ export class VotingResultComponent implements OnInit {
       this.http.get('api/votings/'+ code+'/schulzes').subscribe(data => {
         this.schulzeResult = data;
       });
-      this.http.get('api/votings/'+ code+'/kemenies').subscribe(data => {
+     this.http.get('api/votings/'+ code+'/kemenies').subscribe(data => {
         this.kemenieResult = data;
+      });
+      this.http.get('api/votings/'+ code+'/rankeds').subscribe(data => {
+        this.rankedResult = data;
       });
     })
   }

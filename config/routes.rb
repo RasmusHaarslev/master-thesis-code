@@ -8,6 +8,7 @@ Rails.application.routes.draw do
         resource :preferences, only: %i[show create]
         resource :kemenies, only: %i[show]
         resource :schulzes, only: %i[show]
+        resource :rankeds, only: %i[show]
       end
     end
   end
