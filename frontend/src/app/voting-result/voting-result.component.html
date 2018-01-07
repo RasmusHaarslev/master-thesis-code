@@ -1,23 +1,16 @@
 <h1>Resultat af afstemmning</h1>
 <h3>Schulze</h3>
-<md-list>
-  <md-list-item
-    style="border: 1px solid darkgrey;
-          background-color: #1CA9F0;"
-    *ngFor="let item of schulzeResult;let i = index">
-    <p nfIf="item.edit" mdLine>
-      {{item}}
-    </p>
-  </md-list-item>
-</md-list>
+<p>
+  Tid: {{schulzeResult['time']}}
+  Film: {{schulzeResult['movie']}}
+  Biograf: {{schulzeResult['cinema']}}
+</p>
+
 <h3>Kemeny</h3>
-<md-list>
-  <md-list-item
-    style="border: 1px solid darkgrey;
-          background-color: #1CA9F0;"
-    *ngFor="let item of kemenieResult;let i = index">
-    <p nfIf="item.edit" mdLine>
-      {{item}}
-    </p>
-  </md-list-item>
-</md-list>
+<p>
+  Tid: {{kemenieResult['time']}}
+  Film: {{kemenieResult['movie']}}
+  Biograf: {{kemenieResult['cinema']}}
+</p>
+
+
