@@ -2,8 +2,13 @@ class Votings::KemeniesController < ApplicationController
   before_action :set_voting, only: [:show]
 
   def show
-    @kemeny = KemenyService.new(FormatService.format_voting(@voting))
-    render json: @kemeny.winner(JSON.parse(@voting.alternatives))
+    @voting_service = VotingService.new
+
+    @voting = @voting_service.mapning(@voting)
+
+    winners = @voting_service.kemeny(@voting)
+
+    render json: winners
   end
 
   private

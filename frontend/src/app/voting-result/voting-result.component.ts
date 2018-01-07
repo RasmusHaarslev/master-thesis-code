@@ -19,10 +19,9 @@ export class VotingResultComponent implements OnInit {
       this.http.get('api/votings/'+ code+'/schulzes').subscribe(data => {
         this.schulzeResult = data;
       });
-      /*this.http.get('api/votings/'+ code+'/kemenies').subscribe(data => {
-        console.log(data[0]);
-        this.kemenieResult = data[0]
-      });*/
+      this.http.get('api/votings/'+ code+'/kemenies').subscribe(data => {
+        this.kemenieResult = data;
+      });
     })
   }
 
